@@ -3,6 +3,7 @@ package com.light.museumguide;
 import android.arch.persistence.room.Database;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
@@ -28,25 +29,39 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    MainFragment mainFragment;
+    ContactsFragment contactsFragment;
+    private boolean isMainVisible;
+    private boolean isContactVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        MainFragment mainFragment = new MainFragment();
-        ContactsFragment contactsFragment = new ContactsFragment();
+        mainFragment = new MainFragment();
+        contactsFragment = new ContactsFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.add(mainFragment,"Main");
+        fragmentTransaction.add(R.id.root_container, mainFragment);
         fragmentTransaction.commit();
         setSupportActionBar(toolbar);
+        isMainVisible = true;
+        isContactVisible = false;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,47 +80,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-////        Spinner spinner = findViewById(R.id.spinner);
-//        //Адаптер - Объект который принимает данные и передает их выпадающему списку.
-//        String[] names = {"BAKLAN", "ARTEM", "MUSEUM", "ADSA", "NU VSE, HVATIT"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, names);
-//        spinner.setAdapter(adapter);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                TextView tv = (TextView) view;
-//                Toast.makeText(MainActivity.this, tv.getText(), Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
-//        ListView lv = findViewById(R.id.listview);
-//        ArrayList<HashMap<String, String>> list = new ArrayList<>();
-//
-//        HashMap<String, String> hashMap1 = new HashMap<>();
-//        hashMap1.put("name", "Baklan");
-//        hashMap1.put("age", "15");
-//        list.add(hashMap1);
-//
-//        HashMap<String, String> hashMap2 = new HashMap<>();
-//        hashMap2.put("name", "Oleg");
-//        hashMap2.put("age", "32");
-//        list.add(hashMap2);
-//        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-//        Cursor cursor = databaseHelper.getDataFromDB();
-//        SimpleAdapter simpleAdapter = new SimpleAdapter(
-//                this,
-//                list,
-//                android.R.layout.simple_list_item_2,
-//                new String[]{"name","age"},
-//                new int[]{android.R.id.text1, android.R.id.text2});
-//        SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, new String[]{"name", "age"},
-//                new int[]{android.R.id.text1, android.R.id.text2}, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-//        lv.setAdapter(simpleCursorAdapter);
     }
 
     @Override
@@ -147,8 +121,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            new MainFragment().isVisibling(true);
-            new ContactsFragment().isVisibling(false);
+            if (isMainVisible) {
+
+            } else {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.root_container, mainFragment);
+                fragmentTransaction.remove(contactsFragment);
+                fragmentTransaction.commit();
+                isMainVisible = true;
+                isContactVisible = false;
+            }
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
@@ -156,11 +140,46 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_contacts) {
+            if (isContactVisible) {
 
+            } else {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.remove(mainFragment);
+                fragmentTransaction.add(R.id.root_container, contactsFragment);
+                fragmentTransaction.commit();
+                isMainVisible = false;
+                isContactVisible = true;
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private class MyConnection extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            String content = "";
+            try {
+                URL url = new URL("https://forum.advance-rp.ru/");
+                URLConnection urlConnection = url.openConnection();
+                HttpURLConnection connection = (HttpURLConnection) urlConnection;
+                InputStream inputStream = connection.getInputStream();
+                Scanner scanner = new Scanner(inputStream);
+                while(scanner.hasNextLine()) {
+                    String s = scanner.nextLine();
+                    content += s;
+
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println(content);
+            return null;
+        }
     }
 }

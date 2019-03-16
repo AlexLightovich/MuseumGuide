@@ -1,31 +1,42 @@
 package com.light.museumguide;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainFragment extends Fragment {
-    TextView tv;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
-        tv = fragmentView.findViewById(R.id.textView2);
+        final View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
+        Button howscanbtn = fragmentView.findViewById(R.id.sqBtn);
+        howscanbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(fragmentView.getContext(), "подойди к двери короч", Toast.LENGTH_SHORT).show();
+            }
+        });
+        Button sqBtn = fragmentView.findViewById(R.id.sqBtn);
+        sqBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(fragmentView.getContext(),ScanningBarcodeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return fragmentView;
     }
-    public void isVisibling(boolean b) {
-        if(b){
-            tv.setVisibility(View.VISIBLE);
-        }else{
-            tv.setVisibility(View.INVISIBLE);
-        }
-    }
+
 
 }
