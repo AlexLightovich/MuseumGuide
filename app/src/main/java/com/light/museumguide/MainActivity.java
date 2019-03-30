@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         galleryFragment = new GalleryFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.root_container, mainFragment);
+        fragmentTransaction.replace(R.id.root_container, mainFragment);
         fragmentTransaction.commit();
         setSupportActionBar(toolbar);
         isMainVisible = true;

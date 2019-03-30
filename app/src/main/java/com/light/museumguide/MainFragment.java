@@ -19,11 +19,12 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
-        Button howscanbtn = fragmentView.findViewById(R.id.sqBtn);
+        Button howscanbtn = fragmentView.findViewById(R.id.htsBtn);
         howscanbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(fragmentView.getContext(), "подойди к двери короч", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(fragmentView.getContext(), HowScanActivity.class);
+                startActivity(intent);
             }
         });
         Button sqBtn = fragmentView.findViewById(R.id.sqBtn);

@@ -20,12 +20,12 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         ListView list = view.findViewById(R.id.list_view);
-        ArrayList<Map<String,Integer>> list1 = new ArrayList<>();
-        HashMap<String,Integer> map = new HashMap<>();
+        ArrayList<Map<String,Object>> list1 = new ArrayList<>();
+        HashMap<String,Object> map = new HashMap<>();
         map.put("First",R.drawable.expoimage1);
-        map.put("FirstTXT", 111112212);
+        map.put("FirstTXT", getResources().getString(R.string.first_expo));
         list1.add(map);
-        SimpleAdapter simpleAdapter = new SimpleAdapter(view.getContext(), list1, android.R.layout.activity_list_item, new String[]{"First","FirstTXT"}, new int[]{android.R.id.icon,android.R.id.text1});
+        SimpleAdapter simpleAdapter = new SimpleAdapter(view.getContext(), list1, R.layout.gallery_layout, new String[]{"First","FirstTXT", "Second","SecondTXT"}, new int[]{R.id.icon,R.id.text1});
         list.setAdapter(simpleAdapter);
 
 
