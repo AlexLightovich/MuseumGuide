@@ -43,10 +43,12 @@ import java.util.Scanner;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    MainFragment mainFragment;
-    ContactsFragment contactsFragment;
+    private MainFragment mainFragment;
+    private ContactsFragment contactsFragment;
+    private GalleryFragment galleryFragment;
     private boolean isMainVisible;
     private boolean isContactVisible;
+    private boolean isGalleryVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         mainFragment = new MainFragment();
         contactsFragment = new ContactsFragment();
+        galleryFragment = new GalleryFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.root_container, mainFragment);
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         isMainVisible = true;
         isContactVisible = false;
+        isGalleryVisible = false;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,15 +130,24 @@ public class MainActivity extends AppCompatActivity
             } else {
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.root_container, mainFragment);
-                fragmentTransaction.remove(contactsFragment);
+                fragmentTransaction.replace(R.id.root_container, mainFragment);
+//                fragmentTransaction.add(R.id.root_container, mainFragment);
                 fragmentTransaction.commit();
                 isMainVisible = true;
                 isContactVisible = false;
+                isGalleryVisible = false;
             }
 
         } else if (id == R.id.nav_gallery) {
-
+            if (!isGalleryVisible) {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.root_container, galleryFragment);
+                fragmentTransaction.commit();
+                isMainVisible = false;
+                isContactVisible = false;
+                isGalleryVisible = true;
+            }
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -145,11 +158,12 @@ public class MainActivity extends AppCompatActivity
             } else {
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.remove(mainFragment);
-                fragmentTransaction.add(R.id.root_container, contactsFragment);
+                fragmentTransaction.replace(R.id.root_container,contactsFragment);
+//                fragmentTransaction.add(R.id.root_container, contactsFragment);
                 fragmentTransaction.commit();
                 isMainVisible = false;
                 isContactVisible = true;
+                isGalleryVisible = false;
             }
         }
 
