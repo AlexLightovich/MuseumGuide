@@ -105,7 +105,8 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
             Toast.makeText(this, "Нажмите кнопку Назад еще раз, чтобы вернутся на главный экран.(BACKPRESS="+backPressCounter+")", Toast.LENGTH_SHORT).show();
         }else if(backPressCounter==2){
             backPressCounter=0;
-            super.onBackPressed();
+            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(intent);
         }
     }
 
