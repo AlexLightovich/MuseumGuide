@@ -40,6 +40,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -49,6 +55,7 @@ public class MainActivity extends AppCompatActivity
     private boolean isMainVisible;
     private boolean isContactVisible;
     private boolean isGalleryVisible;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         isMainVisible = true;
         isContactVisible = false;
         isGalleryVisible = false;
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +82,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-
+        fab.show();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -102,6 +109,8 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -136,6 +145,8 @@ public class MainActivity extends AppCompatActivity
                 isMainVisible = true;
                 isContactVisible = false;
                 isGalleryVisible = false;
+                fab.show();
+
             }
 
         } else if (id == R.id.nav_gallery) {
@@ -147,6 +158,7 @@ public class MainActivity extends AppCompatActivity
                 isMainVisible = false;
                 isContactVisible = false;
                 isGalleryVisible = true;
+                fab.show();
             }
         } else if (id == R.id.nav_slideshow) {
 
@@ -164,6 +176,7 @@ public class MainActivity extends AppCompatActivity
                 isMainVisible = false;
                 isContactVisible = true;
                 isGalleryVisible = false;
+                fab.hide();
             }
         }
 
