@@ -2,6 +2,7 @@ package com.light.museumguide;
 
 import android.arch.persistence.room.Database;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,11 +53,16 @@ public class MainActivity extends AppCompatActivity
     private MainFragment mainFragment;
     private ContactsFragment contactsFragment;
     private GalleryFragment galleryFragment;
+    private NewsFragment newsFragment;
+    private MapFragment mapFragment;
     private boolean isMainVisible;
+    private boolean isNewsVisible;
+    private boolean isMapVisible;
     private boolean isContactVisible;
     private boolean isGalleryVisible;
     private FloatingActionButton fab;
-
+    public static final String APP_PREFERENCES = "mysettings";
+    SharedPreferences mSettings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +71,9 @@ public class MainActivity extends AppCompatActivity
         mainFragment = new MainFragment();
         contactsFragment = new ContactsFragment();
         galleryFragment = new GalleryFragment();
+
+        mapFragment = new MapFragment();
+        newsFragment = new NewsFragment();
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.root_container, mainFragment);
@@ -72,7 +81,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         isMainVisible = true;
         isContactVisible = false;
+        isMapVisible = false;
         isGalleryVisible = false;
+        isNewsVisible = false;
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,8 +154,10 @@ public class MainActivity extends AppCompatActivity
 //                fragmentTransaction.add(R.id.root_container, mainFragment);
                 fragmentTransaction.commit();
                 isMainVisible = true;
+                isMapVisible = false;
                 isContactVisible = false;
                 isGalleryVisible = false;
+                isNewsVisible = false;
                 fab.show();
 
             }
@@ -158,11 +171,43 @@ public class MainActivity extends AppCompatActivity
                 isMainVisible = false;
                 isContactVisible = false;
                 isGalleryVisible = true;
+                isGalleryVisible = false;
+                isMapVisible = false;
                 fab.show();
             }
         } else if (id == R.id.nav_slideshow) {
 
+            if (isNewsVisible) {
+
+            } else {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.root_container,newsFragment);
+//                fragmentTransaction.add(R.id.root_container, contactsFragment);
+                fragmentTransaction.commit();
+                isMainVisible = false;
+                isContactVisible = true;
+                isGalleryVisible = false;
+                isNewsVisible = true;
+                isMapVisible = false;
+                fab.hide();
+            }
         } else if (id == R.id.nav_manage) {
+            if (isMapVisible) {
+
+            } else {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.root_container,mapFragment);
+//                fragmentTransaction.add(R.id.root_container, contactsFragment);
+                fragmentTransaction.commit();
+                isMainVisible = false;
+                isMapVisible = true;
+                isContactVisible = true;
+                isNewsVisible = false;
+                isGalleryVisible = false;
+                fab.hide();
+            }
 
         } else if (id == R.id.nav_contacts) {
             if (isContactVisible) {
@@ -174,7 +219,9 @@ public class MainActivity extends AppCompatActivity
 //                fragmentTransaction.add(R.id.root_container, contactsFragment);
                 fragmentTransaction.commit();
                 isMainVisible = false;
+                isMapVisible = false;
                 isContactVisible = true;
+                isNewsVisible = false;
                 isGalleryVisible = false;
                 fab.hide();
             }

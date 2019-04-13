@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Галерея экспозиций" />
+            android:title="Галерея экспозиции" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_today_black_48dp"
@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_map_black_48dp"
-            android:title="Карта выставки" />
+            android:title="Карта экспозиции" />
     </group>
 
     <item android:title="О нас">
