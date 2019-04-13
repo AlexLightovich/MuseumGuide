@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.commit();
                 isMainVisible = false;
                 isMapVisible = true;
-                isContactVisible = true;
+                isContactVisible = false;
                 isNewsVisible = false;
                 isGalleryVisible = false;
                 fab.hide();
