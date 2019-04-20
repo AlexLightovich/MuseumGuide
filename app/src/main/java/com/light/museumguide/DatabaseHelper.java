@@ -22,12 +22,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE user(_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
-                "   name TEXT," +
-                "   age INTEGER" +
+                "   name_expo TEXT," +
+                "   add_info TEXT" +
                 ")";
         db.execSQL(query);
-        db.execSQL("INSERT INTO user (name, age) VALUES('Baklanchick',25)");
-        db.execSQL("INSERT INTO user (name, age) VALUES('Oleg', 35)");
+        db.execSQL("INSERT INTO user (name_expo, add_info) VALUES('First Expo','this is add info for first expo')");
+        db.execSQL("INSERT INTO user (name_expo, add_info) VALUES('Second Expo', 'this is add info for second expo')");
     }
 
     @Override
@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getDataFromDB(){
         SQLiteDatabase readableDatabase = getReadableDatabase();
-        Cursor cursor = readableDatabase.rawQuery("SELECT _id, name, age FROM user", null);
+        Cursor cursor = readableDatabase.rawQuery("SELECT _id, name_expo, add_info FROM user", null);
         return cursor;
     }
 }

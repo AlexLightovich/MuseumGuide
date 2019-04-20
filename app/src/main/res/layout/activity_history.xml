@@ -4,45 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapFragment">
+    android:theme="@style/AppTheme.NoActionBar"
+    tools:context=".HistoryActivity">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <com.ortiz.touchview.TouchImageView
-        android:id="@+id/touchImageView"
+    <ListView
+        android:id="@+id/historylist_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button2floor"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="50dp"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabhistory"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorButtonFloor"
-        android:text="2"
-        app:layout_constraintBottom_toTopOf="@+id/button1floor"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/button1floor"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="50dp"
+    <TextView
+        android:id="@+id/textIfEmpty"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/colorButtonFloor"
-        android:text="1"
+        android:text="Тут будет появляться дополнительная информация об объектах экспозиции"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/historylist_view" />
 
 </android.support.constraint.ConstraintLayout>
