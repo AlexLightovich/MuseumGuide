@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,6 +30,11 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity
     private boolean isGalleryVisible;
     private FloatingActionButton fab;
     private FloatingActionButton fabMap;
+    public static ArrayList<HashMap<String, String>> dataFromSite;
     public static final String APP_PREFERENCES = "isqrscanned";
     public static final String isFirstExpoScanned = "is1exposcanned";
     public static final String isSecondExpoScanned = "is2exposcanned";
@@ -90,6 +97,8 @@ public class MainActivity extends AppCompatActivity
         isMapVisible = false;
         isGalleryVisible = false;
         isNewsVisible = false;
+        MyConnection myConnection = new MyConnection();
+        myConnection.execute();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -328,25 +337,68 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            String content = "";
+            Document doc = null;
+            dataFromSite = new ArrayList<>();
+            dataFromSite.add(new HashMap<String,String>());
+            dataFromSite.add(new HashMap<String,String>());
+            dataFromSite.add(new HashMap<String,String>());
+            dataFromSite.add(new HashMap<String,String>());
             try {
-                URL url = new URL("https://forum.advance-rp.ru/");
-                URLConnection urlConnection = url.openConnection();
-                HttpURLConnection connection = (HttpURLConnection) urlConnection;
-                InputStream inputStream = connection.getInputStream();
-                Scanner scanner = new Scanner(inputStream);
-                while(scanner.hasNextLine()) {
-                    String s = scanner.nextLine();
-                    content += s;
-
+                doc = Jsoup.connect("http://sibmuseum.ru/").get();
+                Elements newsHeadlines = doc.select("li.views-row > span:nth-child(1) > span:nth-child(1) > a:nth-child(1)");
+                for (int i = 0; i < newsHeadlines.size(); i++) {
+                    Element headline = newsHeadlines.get(i);
+                    HashMap<String, String> hashMap = dataFromSite.get(i);
+                    String text = headline.text();
+//                    NewsFragment.firstTitle = text;
+//                    System.out.println(text);
+                    hashMap.put("Zag", text);
+//                    System.out.println(headline.absUrl("href"));
                 }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+                Elements newsDatalines = doc.select("li.views-row > div:nth-child(3) > div:nth-child(1) > span:nth-child(1)");
+                for (int i = 0; i < newsDatalines.size(); i++) {
+                    Element headline = newsDatalines.get(i);
+                    HashMap<String, String> hashMap = dataFromSite.get(i);
+                    String text = headline.text();
+//                    NewsFragment.firstDa = text;
+//                    System.out.println(text);
+                    hashMap.put("Date", text);
+//                    System.out.println(headline.absUrl("href"));
+                }
+                Elements newsTextlines = doc.select("li.views-row > div:nth-child(4) > div:nth-child(1) > p:nth-child(1)");
+                for (int i = 0; i < newsTextlines.size(); i++) {
+                    Element headline = newsTextlines.get(i);
+                    HashMap<String, String> hashMap = dataFromSite.get(i);
+                    String text = headline.text();
+//                    NewsFragment.firstDa = text;
+//                    System.out.println(text);
+                    hashMap.put("News", text);
+//                    System.out.println(headline.absUrl("href"));
+                }
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println(content);
+//            String content = "";
+//            try {
+//                URL url = new URL("http://sibmuseum.ru/");
+//                URLConnection urlConnection = url.openConnection();
+//                HttpURLConnection connection = (HttpURLConnection) urlConnection;
+//                InputStream inputStream = connection.getInputStream();
+//                Scanner scanner = new Scanner(inputStream);
+//                while(scanner.hasNextLine()) {
+//                    String s = scanner.nextLine();
+//                    content += s;
+//
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            System.out.println(content);
             return null;
+        }
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
         }
     }
 }
