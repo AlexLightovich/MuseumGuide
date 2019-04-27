@@ -185,17 +185,6 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                 case FirebaseVisionBarcode.TYPE_TEXT: {
                     String rawValue = item.getRawValue();
                     Toast.makeText(this, rawValue, Toast.LENGTH_SHORT).show();
-
-//                    android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-//                    builder.setMessage(item.getRawValue());
-//                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    android.support.v7.app.AlertDialog dialog = builder.create();
-//                    dialog.show();
                     cameraView.start();
                     if (rawValue.equals("Go to back!")) {
                         cameraView.stop();
@@ -211,26 +200,28 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                         System.out.println(aBoolean);
                         withWay.show();
 
-                    } else if (rawValue.equals("FirstDebugExpo")&& !MainActivity.isFirstExpoScannedH) {
+                    } else if (rawValue.equals("FirstDebugExpo") && !MainActivity.isFirstExpoScannedH) {
                         cameraView.stop();
                         HistoryActivity ha = new HistoryActivity();
                         HashMap<String, Object> map = new HashMap<>();
-                        map.put("Image",R.drawable.expoimage1);
+                        map.put("Image", R.drawable.expoimage1);
                         SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
                         SharedPreferences.Editor edit = sPref.edit();
                         edit.putBoolean(MainActivity.isFirstExpoScanned, true);
                         edit.commit();
                         map.put("Text", "First Expo");
                         ha.list1.add(map);
-                        System.out.println("HA LIST"+ha.list1);
+                        System.out.println("HA LIST" + ha.list1);
                         MainActivity mainActivity = new MainActivity();
                         mainActivity.id = R.id.nav_manage;
                         ExpoInfoActivity.imageRes = getDrawable(R.drawable.expoimage1);
                         ExpoInfoActivity.title = "First Expo";
                         MainActivity.isFirstExpoScannedH = true;
+                        ExpoInfoActivity.audioResource = R.raw.palagin;
+                        ExpoInfoActivity.isWithPlayer = true;
                         Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                         startActivity(intent);
-                    } else if (rawValue.equals("SecondDebugExpo")&& !MainActivity.isSecondExpoScannedH) {
+                    } else if (rawValue.equals("SecondDebugExpo") && !MainActivity.isSecondExpoScannedH) {
                         cameraView.stop();
                         HistoryActivity ha = new HistoryActivity();
                         SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -238,11 +229,13 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                         edit.putBoolean(MainActivity.isSecondExpoScanned, true);
                         edit.commit();
                         HashMap<String, Object> map = new HashMap<>();
-                        map.put("Image",R.drawable.expoimage1);
+                        map.put("Image", R.drawable.expoimage1);
                         map.put("Text", "Second Expo");
+                        ExpoInfoActivity.audioResource = R.raw.catmeow;
                         ha.list1.add(map);
                         MainActivity mainActivity = new MainActivity();
                         mainActivity.id = R.id.nav_manage;
+                        ExpoInfoActivity.isWithPlayer = false;
                         ExpoInfoActivity.imageRes = getDrawable(R.drawable.expoimage1);
                         ExpoInfoActivity.title = "Second Expo";
                         MainActivity.isSecondExpoScannedH = true;

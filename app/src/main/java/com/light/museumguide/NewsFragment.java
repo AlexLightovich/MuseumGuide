@@ -1,5 +1,7 @@
 package com.light.museumguide;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +48,15 @@ public class NewsFragment extends Fragment {
 //        list1.add(map3);
         SimpleAdapter simpleAdapter = new SimpleAdapter(view.getContext(), MainActivity.dataFromSite, R.layout.news_view_layout, new String[]{"Zag","Date", "News"}, new int[]{R.id.textZagol,R.id.textDate,R.id.textNews});
         list.setAdapter(simpleAdapter);
+        TextView txt = view.findViewById(R.id.textView);
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri address = Uri.parse("http://sibmuseum.ru/news");
+                Intent openLinkIntent = new Intent(Intent.ACTION_VIEW, address);
+                startActivity(openLinkIntent);
+            }
+        });
         return view;
     }
 }

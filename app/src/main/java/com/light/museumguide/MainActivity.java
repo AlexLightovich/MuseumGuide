@@ -4,6 +4,7 @@ import android.arch.persistence.room.Database;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fab;
     private FloatingActionButton fabMap;
     public static ArrayList<HashMap<String, String>> dataFromSite;
+    public static HashMap<String,String> linkToNews = new HashMap<>();
     public static final String APP_PREFERENCES = "isqrscanned";
     public static final String isFirstExpoScanned = "is1exposcanned";
     public static final String isSecondExpoScanned = "is2exposcanned";
@@ -205,6 +207,14 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void newsClick(View view){
+        TextView txtTitle = view.findViewById(R.id.textZagol);
+        String link = MainActivity.linkToNews.get(txtTitle.getText());
+        Uri address = Uri.parse(link);
+        Intent openLinkIntent = new Intent(Intent.ACTION_VIEW, address);
+        startActivity(openLinkIntent);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -353,7 +363,9 @@ public class MainActivity extends AppCompatActivity
 //                    NewsFragment.firstTitle = text;
 //                    System.out.println(text);
                     hashMap.put("Zag", text);
-//                    System.out.println(headline.absUrl("href"));
+                    String href = headline.absUrl("href");
+                    linkToNews.put(text,href);
+
                 }
                 Elements newsDatalines = doc.select("li.views-row > div:nth-child(3) > div:nth-child(1) > span:nth-child(1)");
                 for (int i = 0; i < newsDatalines.size(); i++) {

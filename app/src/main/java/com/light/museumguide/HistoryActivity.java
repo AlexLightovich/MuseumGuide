@@ -75,6 +75,8 @@ public class HistoryActivity extends AppCompatActivity {
         image = (ImageView) view.findViewById(R.id.icon);
         if (txtTitle.getText().equals("First Expo")) {
             ExpoInfoActivity.title = txtTitle.getText();
+            ExpoInfoActivity.audioResource = R.raw.palagin;
+            ExpoInfoActivity.isWithPlayer = true;
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
@@ -82,6 +84,9 @@ public class HistoryActivity extends AppCompatActivity {
         }
         if (txtTitle.getText().equals("Second Expo")) {
             ExpoInfoActivity.title = txtTitle.getText();
+            ExpoInfoActivity.audioResource = R.raw.catmeow;
+            ExpoInfoActivity.isWithPlayer = false;
+
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
