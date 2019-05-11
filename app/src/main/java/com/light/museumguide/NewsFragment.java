@@ -16,9 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NewsFragment extends Fragment {
-    public static String firstTitle;
-    public static String firstDate;
-    public static String firstText;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

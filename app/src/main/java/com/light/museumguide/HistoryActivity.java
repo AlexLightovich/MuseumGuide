@@ -76,7 +76,7 @@ public class HistoryActivity extends AppCompatActivity {
         }
         if (sPref.getBoolean(MainActivity.isOrganScanned, false) && !MainActivity.isOrganScannedH) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
+            map.put("Image", R.drawable.organ);
             MainActivity.isOrganScannedH = true;
             map.put("Text", "Домашний орган");
             list1.add(map);

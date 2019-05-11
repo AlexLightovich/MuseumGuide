@@ -289,14 +289,14 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                         edit.putBoolean(MainActivity.isOrganScanned, true);
                         edit.commit();
                         HashMap<String, Object> map = new HashMap<>();
-                        map.put("Image", R.drawable.expoimage1);
+                        map.put("Image", R.drawable.organ);
                         map.put("Text", "Домашний орган");
                         ExpoInfoActivity.audioResource = R.raw.orghan;
                         ha.list1.add(map);
                         MainActivity mainActivity = new MainActivity();
                         mainActivity.id = R.id.nav_manage;
                         ExpoInfoActivity.isWithPlayer = true;
-                        ExpoInfoActivity.imageRes = getDrawable(R.drawable.expoimage1);
+                        ExpoInfoActivity.imageRes = getDrawable(R.drawable.organ);
                         ExpoInfoActivity.title = "Домашний орган";
                         MainActivity.isOrganScannedH = true;
                         Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);

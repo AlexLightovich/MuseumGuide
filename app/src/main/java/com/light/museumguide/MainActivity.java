@@ -321,7 +321,7 @@ public class MainActivity extends AppCompatActivity
 //                fragmentTransaction.add(R.id.include, contactsFragment);
                 fragmentTransaction.commit();
                 isMainVisible = false;
-                isContactVisible = true;
+                isContactVisible = false;
                 isAboutVisible = false;
                 isGalleryVisible = false;
                 isNewsVisible = true;
