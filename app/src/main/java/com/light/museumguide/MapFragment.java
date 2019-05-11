@@ -1,5 +1,7 @@
 package com.light.museumguide;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,6 +14,15 @@ import com.ortiz.touchview.TouchImageView;
 
 public class MapFragment extends Fragment {
     private TouchImageView img;
+    public static boolean isOrganScanned;
+    private AlertDialog.Builder welcomeBuilder;
+    private AlertDialog welcomeDialog;
+    public static boolean isKobizScanned;
+    public static boolean isVarganScanned;
+    public static boolean isDombraScanned;
+    public static boolean isMansiScanned;
+    public static boolean isYurtaScanned;
+
     public static boolean isWithWay;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -21,22 +32,49 @@ public class MapFragment extends Fragment {
         Button secondFloorBtn = view.findViewById(R.id.button2floor);
         System.out.println(new HistoryActivity().list1);
         img = view.findViewById(R.id.touchImageView);
+        welcomeBuilder = new AlertDialog.Builder(view.getContext())
+                .setTitle("Добро пожаловать!")
+                .setCancelable(true)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        welcomeDialog.cancel();
+                    }
+                })
+                .setMessage(R.string.welcome_dialog);
         if(isWithWay) {
-            img.setImageResource(R.drawable.ic_entry_hall_withway);
-            firstFloorBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    img.setImageResource(R.drawable.ic_entry_hall_withway);
-                }
-            });
-            secondFloorBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    img.setImageResource(R.drawable.ic_main_hall_withway);
-                }
-            });
+            if(!isDombraScanned && !isOrganScanned && !isVarganScanned && !isKobizScanned && !isYurtaScanned && !isMansiScanned) {
+                img.setImageResource(R.drawable.ic_entry_hall_withway);
+                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        img.setImageResource(R.drawable.ic_entry_hall_withway);
+                    }
+                });
+                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        img.setImageResource(R.drawable.ic_main_hall_withway);
+                    }
+                });
+            }else if(!isDombraScanned && !isVarganScanned && !isKobizScanned && isOrganScanned){
+                img.setImageResource(R.drawable.ic_switho);
+                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        img.setImageResource(R.drawable.ic_entry_hall_withway);
+                    }
+                });
+                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        img.setImageResource(R.drawable.ic_switho);
+                    }
+                });
+            }
         } else {
-            img.setImageResource(R.drawable.ic_entry_hall_withoutway);
+            if(!isDombraScanned && !isOrganScanned && !isVarganScanned && !isKobizScanned && !isYurtaScanned && !isMansiScanned) {
+                img.setImageResource(R.drawable.ic_entry_hall_withoutway);
                 firstFloorBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -49,6 +87,7 @@ public class MapFragment extends Fragment {
                         img.setImageResource(R.drawable.ic_main_hall_withoutway);
                     }
                 });
+            }
         }
         return view;
 

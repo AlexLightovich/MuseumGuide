@@ -1,6 +1,8 @@
 package com.light.museumguide;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,9 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactsFragment extends Fragment {
     TextView tv;
+    ImageView logo;
+    private int easterEggCounter;
+    private View fragmentView;
     ImageView vk;
     ImageView instagram;
     ImageView twitter;
@@ -20,7 +26,24 @@ public class ContactsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View fragmentView = inflater.inflate(R.layout.fragment_contacts, container, false);
+        easterEggCounter = 0;
+        fragmentView = inflater.inflate(R.layout.fragment_contacts, container, false);
+        logo = fragmentView.findViewById(R.id.logo);
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                easterEggCounter++;
+                System.out.println("YOU PRESS NA EASTER:::"+easterEggCounter);
+                if(easterEggCounter>=5) {
+                    SharedPreferences preferences = ContactsFragment.this.getActivity().getSharedPreferences("qrscan", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor edit = preferences.edit();
+                    edit.putBoolean(MainActivity.isAllExpo, true);
+                    edit.commit();
+                    MainActivity.isAllExpoH = true;
+                    Toast.makeText(fragmentView.getContext(), "Вы нашли пасхалку. Приятного пользования by AlexLightovich :)", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         tv = fragmentView.findViewById(R.id.textContacts);
         TextView phone = fragmentView.findViewById(R.id.textContacts2);
         phone.setOnClickListener(new View.OnClickListener() {
@@ -66,5 +89,11 @@ public class ContactsFragment extends Fragment {
         }else{
             tv.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        easterEggCounter = 0;
     }
 }

@@ -27,6 +27,19 @@ public class MainFragment extends Fragment {
                 startActivity(intent);
             }
         });
+        Button revBtn = fragmentView.findViewById(R.id.revBtn);
+        if(!MainActivity.isAllExpoH) {
+            revBtn.setVisibility(View.INVISIBLE);
+        }else {
+            revBtn.setVisibility(View.VISIBLE);
+        }
+        revBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(fragmentView.getContext(), ReviewActivity.class);
+                startActivity(intent);
+            }
+        });
         Button sqBtn = fragmentView.findViewById(R.id.sqBtn);
         sqBtn.setOnClickListener(new View.OnClickListener() {
             @Override

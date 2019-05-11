@@ -1,13 +1,16 @@
 package com.light.museumguide;
 
 import android.arch.persistence.room.Database;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -63,13 +66,22 @@ public class MainActivity extends AppCompatActivity
     private NewsFragment newsFragment;
     private MapFragment mapFragment;
     private LockFragment lockFragment;
+    private AboutFragment aboutFragment;
     private boolean isMainVisible;
     public static int id;
     private boolean isNewsVisible;
     public static boolean isFirstExpoScannedH;
     public static boolean isSecondExpoScannedH;
+    public static boolean isYurtaScannedH;
+    public static boolean isMansiScannedH;
+    public static boolean isAllExpoH;
+    public static boolean isKobizScannedH;
+    public static boolean isDombraScannedH;
+    public static boolean isOrganScannedH;
+    public static boolean isVarganScannedH;
     private boolean isMapVisible;
     private boolean isContactVisible;
+    private boolean isAboutVisible;
     private boolean isQRScanned;
     private boolean isGalleryVisible;
     private FloatingActionButton fab;
@@ -78,8 +90,22 @@ public class MainActivity extends AppCompatActivity
     public static HashMap<String,String> linkToNews = new HashMap<>();
     public static final String APP_PREFERENCES = "isqrscanned";
     public static final String isFirstExpoScanned = "is1exposcanned";
+    public static final String isKobizScanned = "isKobScan";
+    public static final String isDombraScanned = "isDombraScan";
+    public static final String isYurtaScanned = "isYurtScan";
+    public static final String isMansiScanned = "isMansiScan";
+    public static final String isOrganScanned = "isOrgScan";
+    public static final String isVarganScanned = "isVargScan";
+    public static final String isKobizRate = "isKobRate";
+    public static final String isDombraRate = "isDombraRate";
+    public static final String isAllExpo = "isAllExpo";
+    public static final String isOrganRate = "isOrgRate";
+    public static final String isYurtaRate = "isYurtRate";
+    public static final String isMansiRate = "isMansiRate";
+    public static final String isVarganRate = "isVargRate";
     public static final String isSecondExpoScanned = "is2exposcanned";
     public static final String isWithWayCheck = "iswithway";
+    public static String ANDROID_ID;
     SharedPreferences sPref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +114,9 @@ public class MainActivity extends AppCompatActivity
 //        setTheme(R.style.AppTheme_NoActionBar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ANDROID_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         mainFragment = new MainFragment();
+        aboutFragment = new AboutFragment();
         contactsFragment = new ContactsFragment();
         galleryFragment = new GalleryFragment();
         mapFragment = new MapFragment();
@@ -97,6 +125,7 @@ public class MainActivity extends AppCompatActivity
         isMainVisible = true;
         isContactVisible = false;
         isMapVisible = false;
+        isAboutVisible = false;
         isGalleryVisible = false;
         isNewsVisible = false;
         MyConnection myConnection = new MyConnection();
@@ -127,6 +156,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         sPref = getSharedPreferences("qrscan",MODE_PRIVATE);
         isQRScanned = sPref.getBoolean(MainActivity.APP_PREFERENCES, false);
+        isAllExpoH = sPref.getBoolean(isAllExpo,false);
+        MapFragment.isOrganScanned = sPref.getBoolean(isOrganScanned,false);
+        MapFragment.isKobizScanned = sPref.getBoolean(isKobizScanned,false);
+        MapFragment.isVarganScanned = sPref.getBoolean(isVarganScanned,false);
+        MapFragment.isDombraScanned = sPref.getBoolean(isDombraScanned,false);
+        MapFragment.isYurtaScanned = sPref.getBoolean(isYurtaScanned,false);
+        MapFragment.isMansiScanned = sPref.getBoolean(isMansiScanned,false);
         MapFragment.isWithWay = sPref.getBoolean(isWithWayCheck, false);
         System.out.println(isQRScanned);
         if (isQRScanned) {
@@ -194,20 +230,21 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     protected void newsClick(View view){
         TextView txtTitle = view.findViewById(R.id.textZagol);
@@ -236,6 +273,7 @@ public class MainActivity extends AppCompatActivity
                 isMapVisible = false;
                 isContactVisible = false;
                 isGalleryVisible = false;
+                isAboutVisible = false;
                 isNewsVisible = false;
                 fab.show();
                 fabMap.hide();
@@ -252,6 +290,7 @@ public class MainActivity extends AppCompatActivity
                     isMainVisible = false;
                     isContactVisible = false;
                     isGalleryVisible = true;
+                    isAboutVisible = false;
                     isGalleryVisible = false;
                     isMapVisible = false;
                     fab.show();
@@ -263,6 +302,7 @@ public class MainActivity extends AppCompatActivity
                     fragmentTransaction.commit();
                     isMainVisible = false;
                     isContactVisible = false;
+                    isAboutVisible = false;
                     isGalleryVisible = true;
                     isGalleryVisible = false;
                     isMapVisible = false;
@@ -282,6 +322,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.commit();
                 isMainVisible = false;
                 isContactVisible = true;
+                isAboutVisible = false;
                 isGalleryVisible = false;
                 isNewsVisible = true;
                 isMapVisible = false;
@@ -300,12 +341,12 @@ public class MainActivity extends AppCompatActivity
                     isMainVisible = false;
                     isMapVisible = true;
                     isContactVisible = false;
+                    isAboutVisible = false;
                     isNewsVisible = false;
                     isGalleryVisible = false;
                     fab.show();
                     fabMap.show();
-                }
-                else{
+                } else{
                     FragmentManager supportFragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.include, lockFragment);
@@ -313,6 +354,7 @@ public class MainActivity extends AppCompatActivity
                     isMainVisible = false;
                     isMapVisible = true;
                     isContactVisible = false;
+                    isAboutVisible = false;
                     isNewsVisible = false;
                     isGalleryVisible = false;
                     fab.show();
@@ -331,8 +373,27 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.commit();
                 isMainVisible = false;
                 isMapVisible = false;
+                isAboutVisible = false;
                 isContactVisible = true;
                 isNewsVisible = false;
+                isGalleryVisible = false;
+                fab.hide();
+                fabMap.hide();
+            }
+        }else if (id == R.id.nav_about) {
+            if (isAboutVisible) {
+
+            } else {
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.include,aboutFragment);
+//                fragmentTransaction.add(R.id.include, contactsFragment);
+                fragmentTransaction.commit();
+                isMainVisible = false;
+                isMapVisible = false;
+                isContactVisible = false;
+                isNewsVisible = false;
+                isAboutVisible = true;
                 isGalleryVisible = false;
                 fab.hide();
                 fabMap.hide();
@@ -343,6 +404,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private class MyConnection extends AsyncTask {
 
         @Override

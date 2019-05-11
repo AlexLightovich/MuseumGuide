@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
+        android:layout_width="418dp"
         android:layout_height="wrap_content"
         android:fontFamily="serif"
         android:text="Добро пожаловать в приложение Историко-Краеведческого музея города Омска"
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Для того, чтобы начать работу с выставкой отсканируйте QR-Код на двери."
+        android:text="Для того, чтобы начать работу с экспозицией отсканируйте QR-Код у входа."
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,4 +66,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addHelpText"
         app:layout_constraintVertical_bias="0.202" />
+
+    <Button
+        android:id="@+id/revBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Оставить отзыв об экспозиции"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addHelpText" />
 </android.support.constraint.ConstraintLayout>

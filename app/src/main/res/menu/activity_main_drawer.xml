@@ -28,6 +28,10 @@
                 android:id="@+id/nav_contacts"
                 android:icon="@drawable/ic_phone_black_48dp"
                 android:title="Контакты" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_48px"
+                android:title="О приложении" />
         </menu>
     </item>
 
