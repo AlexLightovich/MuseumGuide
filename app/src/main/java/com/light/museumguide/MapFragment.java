@@ -22,7 +22,7 @@ public class MapFragment extends Fragment {
     public static boolean isDombraScanned;
     public static boolean isMansiScanned;
     public static boolean isYurtaScanned;
-
+    public static boolean isArmyanScanned;
     public static boolean isWithWay;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,20 +30,26 @@ public class MapFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         Button firstFloorBtn = view.findViewById(R.id.button1floor);
         Button secondFloorBtn = view.findViewById(R.id.button2floor);
-        System.out.println(new HistoryActivity().list1);
+        System.out.println(MainActivity.isFirstEntry);
         img = view.findViewById(R.id.touchImageView);
         welcomeBuilder = new AlertDialog.Builder(view.getContext())
                 .setTitle("Добро пожаловать!")
-                .setCancelable(true)
+                .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         welcomeDialog.cancel();
+                        MainActivity mainActivity = new MainActivity();
+                        mainActivity.setFirstEntryState(false);
                     }
                 })
                 .setMessage(R.string.welcome_dialog);
+        welcomeDialog = welcomeBuilder.create();
+        if(MainActivity.isFirstEntry) {
+            welcomeDialog.show();
+        }
         if(isWithWay) {
-            if(!isDombraScanned && !isOrganScanned && !isVarganScanned && !isKobizScanned && !isYurtaScanned && !isMansiScanned) {
+            if(!isDombraScanned && !isOrganScanned && !isVarganScanned && !isKobizScanned && !isYurtaScanned && !isMansiScanned && !isArmyanScanned) {
                 img.setImageResource(R.drawable.ic_entry_hall_withway);
                 firstFloorBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -57,8 +63,93 @@ public class MapFragment extends Fragment {
                         img.setImageResource(R.drawable.ic_main_hall_withway);
                     }
                 });
-            }else if(!isDombraScanned && !isVarganScanned && !isKobizScanned && isOrganScanned){
-                img.setImageResource(R.drawable.ic_switho);
+            }
+// else if(!isDombraScanned && !isVarganScanned && !isKobizScanned && isOrganScanned && !isYurtaScanned && !isMansiScanned && !isArmyanScanned){
+//                img.setImageResource(R.drawable.ic_switho);
+//                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_entry_hall_withway);
+//                    }
+//                });
+//                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_switho);
+//                    }
+//                });
+//            }else if(!isDombraScanned && !isVarganScanned && !isKobizScanned && isOrganScanned && isYurtaScanned && !isMansiScanned && !isArmyanScanned){
+//                img.setImageResource(R.drawable.ic_swithoy);
+//                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_entry_hall_withway);
+//                    }
+//                });
+//                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_swithoy);
+//                    }
+//                });
+//            }else if(!isVarganScanned && (isKobizScanned || isDombraScanned) && isOrganScanned && isYurtaScanned && !isMansiScanned && !isArmyanScanned){
+//                img.setImageResource(R.drawable.ic_swithoyk);
+//                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_entry_hall_withway);
+//                    }
+//                });
+//                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_swithoyk);
+//                    }
+//                });
+//            }else if(isVarganScanned && (isKobizScanned || isDombraScanned) && isOrganScanned && isYurtaScanned && !isMansiScanned && !isArmyanScanned){
+//                img.setImageResource(R.drawable.ic_swithoykv);
+//                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_entry_hall_withway);
+//                    }
+//                });
+//                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_swithoykv);
+//                    }
+//                });
+//            } else if(isVarganScanned && (isKobizScanned || isDombraScanned) && isOrganScanned && isYurtaScanned && !isMansiScanned && isArmyanScanned){
+//                img.setImageResource(R.drawable.ic_swithoykva);
+//                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_entry_hall_withway);
+//                    }
+//                });
+//                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        img.setImageResource(R.drawable.ic_swithoykva);
+//                    }
+//                });
+            else if(isVarganScanned && (isKobizScanned || isDombraScanned) && isOrganScanned && isYurtaScanned && isMansiScanned && isArmyanScanned){
+                img.setImageResource(R.drawable.ic_swithoykva);
+                firstFloorBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        img.setImageResource(R.drawable.ic_ewithall);
+                    }
+                });
+                secondFloorBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        img.setImageResource(R.drawable.ic_swithoykva);
+                    }
+                });
+            } else {
+                img.setImageResource(R.drawable.ic_entry_hall_withway);
                 firstFloorBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -68,12 +159,12 @@ public class MapFragment extends Fragment {
                 secondFloorBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        img.setImageResource(R.drawable.ic_switho);
+                        img.setImageResource(R.drawable.ic_main_hall_withway);
                     }
                 });
             }
         } else {
-            if(!isDombraScanned && !isOrganScanned && !isVarganScanned && !isKobizScanned && !isYurtaScanned && !isMansiScanned) {
+            if(!isDombraScanned && !isOrganScanned && !isVarganScanned && !isKobizScanned && !isYurtaScanned && !isMansiScanned && !isArmyanScanned) {
                 img.setImageResource(R.drawable.ic_entry_hall_withoutway);
                 firstFloorBtn.setOnClickListener(new View.OnClickListener() {
                     @Override

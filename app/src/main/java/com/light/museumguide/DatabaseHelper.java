@@ -55,6 +55,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO user (name_expo, add_info) VALUES('Традиционная казахская юрта', 'Казахстан, г. Петропавловск, 2015 г.\n" +
                 "Традиционная казахская юрта с полным внутренним убранством в 2015 г. была подарена\n" +
                 "ОГИК музею акимом Северо-Казахстанской области')");
+        db.execSQL("INSERT INTO user (name_expo, add_info) VALUES('Подставка для благовоний в виде граната', 'Армения, сер. XX в.\n" +
+                "\n" +
+                "В Армении гранат является одним из самых узнаваемых символов страны. \n" +
+                "В армянской мифологии гранат символизирует плодородие и удачу')");
         db.execSQL("INSERT INTO user (name_expo, add_info) VALUES('Second Expo', 'this is add info for second expo')");
     }
 

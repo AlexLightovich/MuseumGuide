@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     private NewsFragment newsFragment;
     private MapFragment mapFragment;
     private LockFragment lockFragment;
+    public static boolean isFirstEntry;
     private AboutFragment aboutFragment;
     private boolean isMainVisible;
     public static int id;
@@ -79,20 +80,23 @@ public class MainActivity extends AppCompatActivity
     public static boolean isDombraScannedH;
     public static boolean isOrganScannedH;
     public static boolean isVarganScannedH;
+    public static boolean isArmyanScannedH;
     private boolean isMapVisible;
     private boolean isContactVisible;
     private boolean isAboutVisible;
-    private boolean isQRScanned;
+    public static boolean isQRScanned;
     private boolean isGalleryVisible;
     private FloatingActionButton fab;
     private FloatingActionButton fabMap;
     public static ArrayList<HashMap<String, String>> dataFromSite;
-    public static HashMap<String,String> linkToNews = new HashMap<>();
+    public static HashMap<String, String> linkToNews = new HashMap<>();
     public static final String APP_PREFERENCES = "isqrscanned";
+    public static final String isFirstEntrySP = "isfirstentry";
     public static final String isFirstExpoScanned = "is1exposcanned";
     public static final String isKobizScanned = "isKobScan";
     public static final String isDombraScanned = "isDombraScan";
     public static final String isYurtaScanned = "isYurtScan";
+    public static final String isArmyanScanned = "isBlgvnScan";
     public static final String isMansiScanned = "isMansiScan";
     public static final String isOrganScanned = "isOrgScan";
     public static final String isVarganScanned = "isVargScan";
@@ -103,15 +107,16 @@ public class MainActivity extends AppCompatActivity
     public static final String isYurtaRate = "isYurtRate";
     public static final String isMansiRate = "isMansiRate";
     public static final String isVarganRate = "isVargRate";
+    public static final String isArmyanRate = "isVargRate";
     public static final String isSecondExpoScanned = "is2exposcanned";
     public static final String isWithWayCheck = "iswithway";
     public static String ANDROID_ID;
-    SharedPreferences sPref;
+    public static SharedPreferences sPref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        setTheme(R.style.AppTheme_NoActionBar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ANDROID_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -154,34 +159,30 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        sPref = getSharedPreferences("qrscan",MODE_PRIVATE);
+        sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
         isQRScanned = sPref.getBoolean(MainActivity.APP_PREFERENCES, false);
-        isAllExpoH = sPref.getBoolean(isAllExpo,false);
-        MapFragment.isOrganScanned = sPref.getBoolean(isOrganScanned,false);
-        MapFragment.isKobizScanned = sPref.getBoolean(isKobizScanned,false);
-        MapFragment.isVarganScanned = sPref.getBoolean(isVarganScanned,false);
-        MapFragment.isDombraScanned = sPref.getBoolean(isDombraScanned,false);
-        MapFragment.isYurtaScanned = sPref.getBoolean(isYurtaScanned,false);
-        MapFragment.isMansiScanned = sPref.getBoolean(isMansiScanned,false);
+        isFirstEntry = sPref.getBoolean(isFirstEntrySP,true);
+        isAllExpoH = sPref.getBoolean(isAllExpo, false);
+        MapFragment.isOrganScanned = sPref.getBoolean(isOrganScanned, false);
+        MapFragment.isKobizScanned = sPref.getBoolean(isKobizScanned, false);
+        MapFragment.isVarganScanned = sPref.getBoolean(isVarganScanned, false);
+        MapFragment.isDombraScanned = sPref.getBoolean(isDombraScanned, false);
+        MapFragment.isYurtaScanned = sPref.getBoolean(isYurtaScanned, false);
+        MapFragment.isMansiScanned = sPref.getBoolean(isMansiScanned, false);
+        MapFragment.isArmyanScanned = sPref.getBoolean(isArmyanScanned, false);
         MapFragment.isWithWay = sPref.getBoolean(isWithWayCheck, false);
-        System.out.println(isQRScanned);
-        if (isQRScanned) {
-            Toast.makeText(this, "QR SCANNED", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "QR NOT SCANNED", Toast.LENGTH_SHORT).show();
-        }
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-        fragmentTransaction.add(mainFragment,"DFS");
+        fragmentTransaction.add(mainFragment, "DFS");
         fragmentTransaction.replace(R.id.include, mainFragment);
         fragmentTransaction.commit();
-        if(id==R.id.nav_manage){
+        if (id == R.id.nav_manage) {
             if (isMapVisible) {
 
             } else {
-                if(isQRScanned) {
+                if (isQRScanned) {
                     supportFragmentManager = getSupportFragmentManager();
                     fragmentTransaction = supportFragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.include, mapFragment);
@@ -193,8 +194,7 @@ public class MainActivity extends AppCompatActivity
                     isGalleryVisible = false;
                     fab.show();
                     fabMap.show();
-                }
-                else{
+                } else {
                     supportFragmentManager = getSupportFragmentManager();
                     fragmentTransaction = supportFragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.include, lockFragment);
@@ -220,14 +220,19 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
+    public void setFirstEntryState(boolean state) {
+        isFirstEntry = state;
+        SharedPreferences sharedPreferences = sPref;
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putBoolean(isFirstEntrySP, state);
+        edit.commit();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
 
 
 //    @Override
@@ -246,7 +251,7 @@ public class MainActivity extends AppCompatActivity
 //        return super.onOptionsItemSelected(item);
 //    }
 
-    protected void newsClick(View view){
+    protected void newsClick(View view) {
         TextView txtTitle = view.findViewById(R.id.textZagol);
         String link = MainActivity.linkToNews.get(txtTitle.getText());
         Uri address = Uri.parse(link);
@@ -267,7 +272,6 @@ public class MainActivity extends AppCompatActivity
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.include, mainFragment);
-//                fragmentTransaction.add(R.id.include, mainFragment);
                 fragmentTransaction.commit();
                 isMainVisible = true;
                 isMapVisible = false;
@@ -280,36 +284,6 @@ public class MainActivity extends AppCompatActivity
 
             }
 
-        } else if (id == R.id.nav_gallery) {
-            if (!isGalleryVisible) {
-                if (isQRScanned) {
-                    FragmentManager supportFragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.include, galleryFragment);
-                    fragmentTransaction.commit();
-                    isMainVisible = false;
-                    isContactVisible = false;
-                    isGalleryVisible = true;
-                    isAboutVisible = false;
-                    isGalleryVisible = false;
-                    isMapVisible = false;
-                    fab.show();
-                    fabMap.hide();
-                }else{
-                    FragmentManager supportFragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.include, lockFragment);
-                    fragmentTransaction.commit();
-                    isMainVisible = false;
-                    isContactVisible = false;
-                    isAboutVisible = false;
-                    isGalleryVisible = true;
-                    isGalleryVisible = false;
-                    isMapVisible = false;
-                    fab.show();
-                    fabMap.hide();
-                }
-            }
         } else if (id == R.id.nav_slideshow) {
 
             if (isNewsVisible) {
@@ -317,8 +291,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include,newsFragment);
-//                fragmentTransaction.add(R.id.include, contactsFragment);
+                fragmentTransaction.replace(R.id.include, newsFragment);
                 fragmentTransaction.commit();
                 isMainVisible = false;
                 isContactVisible = false;
@@ -333,7 +306,7 @@ public class MainActivity extends AppCompatActivity
             if (isMapVisible) {
 
             } else {
-                if(isQRScanned) {
+                if (isQRScanned) {
                     FragmentManager supportFragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.include, mapFragment);
@@ -346,7 +319,7 @@ public class MainActivity extends AppCompatActivity
                     isGalleryVisible = false;
                     fab.show();
                     fabMap.show();
-                } else{
+                } else {
                     FragmentManager supportFragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.include, lockFragment);
@@ -368,8 +341,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include,contactsFragment);
-//                fragmentTransaction.add(R.id.include, contactsFragment);
+                fragmentTransaction.replace(R.id.include, contactsFragment);
                 fragmentTransaction.commit();
                 isMainVisible = false;
                 isMapVisible = false;
@@ -380,14 +352,13 @@ public class MainActivity extends AppCompatActivity
                 fab.hide();
                 fabMap.hide();
             }
-        }else if (id == R.id.nav_about) {
+        } else if (id == R.id.nav_about) {
             if (isAboutVisible) {
 
             } else {
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include,aboutFragment);
-//                fragmentTransaction.add(R.id.include, contactsFragment);
+                fragmentTransaction.replace(R.id.include, aboutFragment);
                 fragmentTransaction.commit();
                 isMainVisible = false;
                 isMapVisible = false;
@@ -411,10 +382,10 @@ public class MainActivity extends AppCompatActivity
         protected Object doInBackground(Object[] objects) {
             Document doc = null;
             dataFromSite = new ArrayList<>();
-            dataFromSite.add(new HashMap<String,String>());
-            dataFromSite.add(new HashMap<String,String>());
-            dataFromSite.add(new HashMap<String,String>());
-            dataFromSite.add(new HashMap<String,String>());
+            dataFromSite.add(new HashMap<String, String>());
+            dataFromSite.add(new HashMap<String, String>());
+            dataFromSite.add(new HashMap<String, String>());
+            dataFromSite.add(new HashMap<String, String>());
             try {
                 doc = Jsoup.connect("http://sibmuseum.ru/").get();
                 Elements newsHeadlines = doc.select("li.views-row > span:nth-child(1) > span:nth-child(1) > a:nth-child(1)");
@@ -422,11 +393,9 @@ public class MainActivity extends AppCompatActivity
                     Element headline = newsHeadlines.get(i);
                     HashMap<String, String> hashMap = dataFromSite.get(i);
                     String text = headline.text();
-//                    NewsFragment.firstTitle = text;
-//                    System.out.println(text);
                     hashMap.put("Zag", text);
                     String href = headline.absUrl("href");
-                    linkToNews.put(text,href);
+                    linkToNews.put(text, href);
 
                 }
                 Elements newsDatalines = doc.select("li.views-row > div:nth-child(3) > div:nth-child(1) > span:nth-child(1)");
@@ -434,42 +403,23 @@ public class MainActivity extends AppCompatActivity
                     Element headline = newsDatalines.get(i);
                     HashMap<String, String> hashMap = dataFromSite.get(i);
                     String text = headline.text();
-//                    NewsFragment.firstDa = text;
-//                    System.out.println(text);
                     hashMap.put("Date", text);
-//                    System.out.println(headline.absUrl("href"));
                 }
                 Elements newsTextlines = doc.select("li.views-row > div:nth-child(4) > div:nth-child(1) > p:nth-child(1)");
                 for (int i = 0; i < newsTextlines.size(); i++) {
                     Element headline = newsTextlines.get(i);
                     HashMap<String, String> hashMap = dataFromSite.get(i);
                     String text = headline.text();
-//                    NewsFragment.firstDa = text;
-//                    System.out.println(text);
                     hashMap.put("News", text);
-//                    System.out.println(headline.absUrl("href"));
                 }
+                NewsFragment.isNetworkError = false;
             } catch (Exception e) {
                 e.printStackTrace();
+                NewsFragment.isNetworkError = true;
             }
-//            String content = "";
-//            try {
-//                URL url = new URL("http://sibmuseum.ru/");
-//                URLConnection urlConnection = url.openConnection();
-//                HttpURLConnection connection = (HttpURLConnection) urlConnection;
-//                InputStream inputStream = connection.getInputStream();
-//                Scanner scanner = new Scanner(inputStream);
-//                while(scanner.hasNextLine()) {
-//                    String s = scanner.nextLine();
-//                    content += s;
-//
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            System.out.println(content);
             return null;
         }
+
         @Override
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);

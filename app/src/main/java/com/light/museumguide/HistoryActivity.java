@@ -55,54 +55,54 @@ public class HistoryActivity extends AppCompatActivity {
         }
         if (sPref.getBoolean(MainActivity.isDombraScanned, false) && !MainActivity.isDombraScannedH) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
+            map.put("Image", R.drawable.dombra);
             MainActivity.isDombraScannedH = true;
             map.put("Text", "Музыкальный инструмент «Домбра»");
             list1.add(map);
         }
         if (sPref.getBoolean(MainActivity.isKobizScanned, false) && !MainActivity.isKobizScannedH) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
-            MainActivity.isKobizScannedH = true;
-            map.put("Text", "Музыкальный инструмент «Кобыз»");
-            list1.add(map);
-        }
-        if (sPref.getBoolean(MainActivity.isKobizScanned, false) && !MainActivity.isKobizScannedH) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
+            map.put("Image", R.drawable.kobiz);
             MainActivity.isKobizScannedH = true;
             map.put("Text", "Музыкальный инструмент «Кобыз»");
             list1.add(map);
         }
         if (sPref.getBoolean(MainActivity.isOrganScanned, false) && !MainActivity.isOrganScannedH) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.organ);
+            map.put("Image", R.drawable.homeorgan);
             MainActivity.isOrganScannedH = true;
             map.put("Text", "Домашний орган");
             list1.add(map);
         }
         if (sPref.getBoolean(MainActivity.isVarganScanned, false) && !MainActivity.isVarganScannedH) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
+            map.put("Image", R.drawable.vargan);
             MainActivity.isVarganScannedH = true;
             map.put("Text", "Музыкальный инструмент «Варган»");
             list1.add(map);
         }
         if (sPref.getBoolean(MainActivity.isMansiScanned, false) && !MainActivity.isMansiScannedH) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
+            map.put("Image", R.drawable.mansi);
             MainActivity.isMansiScannedH = true;
             map.put("Text", "Культовое место манси (реконструкция)");
             list1.add(map);
         }
         if (sPref.getBoolean(MainActivity.isYurtaScanned, false) && !MainActivity.isYurtaScannedH) {
             HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
+            map.put("Image", R.drawable.yurta);
             MainActivity.isYurtaScannedH = true;
             map.put("Text", "Традиционная казахская юрта");
             list1.add(map);
         }
-        if (!MainActivity.isDombraScannedH && !MainActivity.isKobizScannedH && !MainActivity.isOrganScannedH && !MainActivity.isVarganScannedH) {
+        if (sPref.getBoolean(MainActivity.isArmyanScanned, false) && !MainActivity.isArmyanScannedH) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("Image", R.drawable.armyan);
+            MainActivity.isArmyanScannedH = true;
+            map.put("Text", "Подставка для благовоний в виде граната");
+            list1.add(map);
+        }
+        if (!MainActivity.isDombraScannedH && !MainActivity.isKobizScannedH && !MainActivity.isOrganScannedH && !MainActivity.isVarganScannedH && !MainActivity.isYurtaScannedH && !MainActivity.isMansiScannedH && !MainActivity.isArmyanScannedH) {
             txt.setVisibility(View.VISIBLE);
         } else {
             txt.setVisibility(View.INVISIBLE);
@@ -119,7 +119,7 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
-    protected void expoClick(View view) {
+    public void expoClick(View view) {
         txtTitle = view.findViewById(R.id.text1);
         image = (ImageView) view.findViewById(R.id.icon);
         if (txtTitle.getText().equals("First Expo")) {
@@ -129,7 +129,6 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
         }
         if (txtTitle.getText().equals("Second Expo")) {
             ExpoInfoActivity.title = txtTitle.getText();
@@ -139,7 +138,6 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
         }
         if (txtTitle.getText().equals("Музыкальный инструмент «Кобыз»")) {
             ExpoInfoActivity.title = txtTitle.getText();
@@ -149,7 +147,6 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
         }
         if (txtTitle.getText().equals("Музыкальный инструмент «Домбра»")) {
             ExpoInfoActivity.title = txtTitle.getText();
@@ -159,7 +156,6 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
         }
         if (txtTitle.getText().equals("Домашний орган")) {
             ExpoInfoActivity.title = txtTitle.getText();
@@ -169,7 +165,6 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
         }
         if (txtTitle.getText().equals("Музыкальный инструмент «Варган»")) {
             ExpoInfoActivity.title = txtTitle.getText();
@@ -178,7 +173,6 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
         }
         if (txtTitle.getText().equals("Традиционная казахская юрта")) {
             ExpoInfoActivity.title = txtTitle.getText();
@@ -187,7 +181,6 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
         }
         if (txtTitle.getText().equals("Культовое место манси (реконструкция)")) {
             ExpoInfoActivity.title = txtTitle.getText();
@@ -196,7 +189,14 @@ public class HistoryActivity extends AppCompatActivity {
             ExpoInfoActivity.imageRes = image.getDrawable();
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
-            Toast.makeText(view.getContext(), "YOU ARE TKNUL to first", Toast.LENGTH_SHORT).show();
+        }
+        if (txtTitle.getText().equals("Подставка для благовоний в виде граната")) {
+            ExpoInfoActivity.title = txtTitle.getText();
+            ExpoInfoActivity.audioResource = R.raw.komus;
+            ExpoInfoActivity.isWithPlayer = false;
+            ExpoInfoActivity.imageRes = image.getDrawable();
+            Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
+            startActivity(intent);
         }
     }
 }

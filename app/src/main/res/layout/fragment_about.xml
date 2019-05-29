@@ -38,7 +38,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Для связи с разработчиком:\nE-Mail: alekslit84@gmail.com"
+        android:text="Благодарность сотрудникам ОГИК Музея\nОтдельная благодарность Ермоле Михаилу \nДля связи с разработчиком:\nE-Mail: alekslit84@gmail.com"
+        android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -33,6 +33,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
     public static Drawable imageRes;
     public static boolean isOrganRate;
     private AlertDialog warningDialog;
+    private static boolean isStop;
     private AlertDialog.Builder rateDialogBuider;
     private AlertDialog rateDialog;
     public static CharSequence addInfo;
@@ -46,12 +47,15 @@ public class ExpoInfoActivity extends AppCompatActivity {
     private SharedPreferences sPref;
     private boolean isRate = false;
     AlertDialog.Builder builder;
+    private static PlayingProgress setPlaying;
     private AudioManager manager;
     private SeekBar playingBar;
     boolean isFirstPlaying = true;
 
     @Override
     public void onBackPressed() {
+        isStop = true;
+        releaseMP();
         Intent intent = new Intent(ExpoInfoActivity.this, HistoryActivity.class);
         startActivity(intent);
     }
@@ -60,9 +64,11 @@ public class ExpoInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expo_info);
+        setPlaying = new PlayingProgress();
         manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         TextView titleText = findViewById(R.id.textTitle);
+        isStop = false;
         sPref = getSharedPreferences("qrscan",MODE_PRIVATE);
         edit = sPref.edit();
         builder = new AlertDialog.Builder(ExpoInfoActivity.this);
@@ -108,34 +114,37 @@ public class ExpoInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!manager.isWiredHeadsetOn()) {
-                    Toast.makeText(ExpoInfoActivity.this, "НАУШНИКИ НЕ ПОДКЛЮЧЕНЫ!!!АААААААА!!!!!!!", Toast.LENGTH_SHORT).show();
                     if (!isDialogShowed) {
                         warningDialog.show();
                     }
                 } else if (manager.isWiredHeadsetOn()) {
-                    Toast.makeText(ExpoInfoActivity.this, "УРА! НАУШНИКИ ПОДКЛЮЧЕНЫ!", Toast.LENGTH_SHORT).show();
                     isDialogShowed = true;
                 }
                 if (!isPlaying && isFirstPlaying && isDialogShowed) {
                     playBtn.setImageResource(R.drawable.ic_pause);
                     isPlaying = true;
-                    isFirstPlaying = false;
                     mediaPlayer = MediaPlayer.create(ExpoInfoActivity.this, audioResource);
+                    isFirstPlaying = false;
                     mediaPlayer.start();
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             isFirstPlaying = true;
                             isPlaying = false;
+                            isStop = true;
+                            setPlaying.cancel(false);
                         }
                     });
                     playingBar.setMax(mediaPlayer.getDuration());
-                    System.out.println("GET DURATION: " + mediaPlayer.getDuration());
-                    PlayingProgress setPlaying = new PlayingProgress();
+                    setPlaying = new PlayingProgress();
                     setPlaying.execute();
                 } else if (!isPlaying && !isFirstPlaying && isDialogShowed) {
                     isPlaying = true;
+                    isStop = false;
+                    mediaPlayer = MediaPlayer.create(ExpoInfoActivity.this, audioResource);
                     mediaPlayer.start();
+                    setPlaying = new PlayingProgress();
+                    setPlaying.execute();
                     playBtn.setImageResource(R.drawable.ic_pause);
                 } else {
                     isPlaying = false;
@@ -202,7 +211,6 @@ public class ExpoInfoActivity extends AppCompatActivity {
                     String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isOrganRate,false);
-                    System.out.println("IS RATE FROM ONCREATE:::::"+isRate);
                 }
 
             }
@@ -224,10 +232,17 @@ public class ExpoInfoActivity extends AppCompatActivity {
             }
             if (MainActivity.isMansiScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Культовое место манси (реконструкция)")) {
                 if (title.equals("Культовое место манси (реконструкция)")) {
-                    System.out.println("ZASHLO TO MANSI");
                     String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isMansiRate, false);
+                }
+
+            }
+            if (MainActivity.isArmyanScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Подставка для благовоний в виде граната")) {
+                if (title.equals("Подставка для благовоний в виде граната")) {
+                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    addInfoText.setText(add_info);
+                    isRate = sPref.getBoolean(MainActivity.isArmyanRate, false);
                 }
 
             }
@@ -237,7 +252,6 @@ public class ExpoInfoActivity extends AppCompatActivity {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 rate = rating;
                 RateConnection rateConnection = new RateConnection();
-                System.out.println("THIS IS IS RATE:::::::: "+isRate);
                 if(isRate) {
                     rateDialog.show();
                 } else {
@@ -250,20 +264,26 @@ public class ExpoInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        isStop = true;
         super.onStop();
+        isPlaying = false;
         isFirstPlaying = true;
+        setPlaying.cancel(false);
         releaseMP();
     }
 
     @Override
     protected void onResume() {
+        isStop = false;
         super.onResume();
         mediaPlayer = MediaPlayer.create(ExpoInfoActivity.this, audioResource);
     }
 
     @Override
     protected void onPause() {
+        isStop = true;
         super.onPause();
+        setPlaying.cancel(false);
         isRate = false;
         isFirstPlaying = true;
         releaseMP();
@@ -274,11 +294,11 @@ public class ExpoInfoActivity extends AppCompatActivity {
         @Override
         protected Object doInBackground(Object[] objects) {
             while (mediaPlayer.getCurrentPosition() != mediaPlayer.getDuration()) {
-                System.out.println(mediaPlayer.getCurrentPosition());
-                playingBar.setProgress(mediaPlayer.getCurrentPosition());
-                if (isFirstPlaying) {
+                if(isStop) {
                     break;
                 }
+                System.out.println(mediaPlayer.getCurrentPosition());
+                playingBar.setProgress(mediaPlayer.getCurrentPosition());
             }
             return null;
         }
@@ -305,7 +325,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] objects) {
             try {
                 isRate = true;
-                URL url = new URL("http://192.168.1.2/dashboard/addrate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
+                URL url = new URL("http://217.25.223.243/dashboard/addrate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 urlConnection.disconnect();
@@ -350,6 +370,13 @@ public class ExpoInfoActivity extends AppCompatActivity {
                     System.out.println(sPref.getBoolean(MainActivity.isYurtaRate,false));
                     isRate = true;
                 }
+                if (title.equals("Подставка для благовоний в виде граната")) {
+                    SharedPreferences.Editor edit = sPref.edit();
+                    edit.putBoolean(MainActivity.isArmyanRate, true);
+                    edit.commit();
+                    System.out.println(sPref.getBoolean(MainActivity.isArmyanRate,false));
+                    isRate = true;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -363,7 +390,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] objects) {
             try {
                 isRate = true;
-                URL url = new URL("http://192.168.1.2/dashboard/replacerate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
+                URL url = new URL("http://217.25.223.243/dashboard/replacerate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 urlConnection.disconnect();
