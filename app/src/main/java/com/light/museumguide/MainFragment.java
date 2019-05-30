@@ -1,18 +1,12 @@
 package com.light.museumguide;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.lang.reflect.Field;
 
 
 public class MainFragment extends Fragment {
@@ -25,7 +19,7 @@ public class MainFragment extends Fragment {
         newsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.id = R.id.nav_slideshow;
+                MainActivity.id = R.id.nav_news;
                 ((MainActivity)getActivity()).replaceFragments();
             }
         });
@@ -43,13 +37,14 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ScanningBarcodeActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         Button mapButton = fragmentView.findViewById(R.id.mapButton);
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.id = R.id.nav_manage;
+                MainActivity.id = R.id.nav_map;
                 ((MainActivity)getActivity()).replaceFragments();
             }
         });

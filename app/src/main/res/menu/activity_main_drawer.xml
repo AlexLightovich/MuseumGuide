@@ -5,15 +5,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_main"
             android:icon="@drawable/ic_account_balance_black_48dp"
             android:title="Главная" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_news"
             android:icon="@drawable/ic_today_black_48dp"
             android:title="Новости" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_map"
             android:icon="@drawable/ic_map_black_48dp"
             android:title="Карта экспозиции" />
     </group>
