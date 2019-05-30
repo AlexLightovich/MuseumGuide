@@ -39,74 +39,125 @@ public class HistoryActivity extends AppCompatActivity {
         list = findViewById(R.id.historylist_view);
         txt = findViewById(R.id.textIfEmpty);
         SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
-        if (sPref.getBoolean(MainActivity.isFirstExpoScanned, false) && !MainActivity.isFirstExpoScannedH) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
-            map.put("Text", "First Expo");
-            MainActivity.isFirstExpoScannedH = true;
-            list1.add(map);
-        }
-        if (sPref.getBoolean(MainActivity.isSecondExpoScanned, false) && !MainActivity.isSecondExpoScannedH) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("Image", R.drawable.expoimage1);
-            MainActivity.isSecondExpoScannedH = true;
-            map.put("Text", "Second Expo");
-            list1.add(map);
-        }
-        if (sPref.getBoolean(MainActivity.isDombraScanned, false) && !MainActivity.isDombraScannedH) {
+//        if (sPref.getBoolean(MainActivity.isFirstExpoScanned, false) && !MainActivity.isFirstExpoScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.expoimage1);
+//            map.put("Text", "First Expo");
+//            MainActivity.isFirstExpoScannedH = true;
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isSecondExpoScanned, false) && !MainActivity.isSecondExpoScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.expoimage1);
+//            MainActivity.isSecondExpoScannedH = true;
+//            map.put("Text", "Second Expo");
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isDombraScanned, false) && !MainActivity.isDombraScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.dombra);
+//            MainActivity.isDombraScannedH = true;
+//            map.put("Text", "Музыкальный инструмент «Домбра»");
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isKobizScanned, false) && !MainActivity.isKobizScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.kobiz);
+//            MainActivity.isKobizScannedH = true;
+//            map.put("Text", "Музыкальный инструмент «Кобыз»");
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isOrganScanned, false) && !MainActivity.isOrganScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.homeorgan);
+//            MainActivity.isOrganScannedH = true;
+//            map.put("Text", "Домашний орган");
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isVarganScanned, false) && !MainActivity.isVarganScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.vargan);
+//            MainActivity.isVarganScannedH = true;
+//            map.put("Text", "Музыкальный инструмент «Варган»");
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isMansiScanned, false) && !MainActivity.isMansiScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.mansi);
+//            MainActivity.isMansiScannedH = true;
+//            map.put("Text", "Культовое место манси (реконструкция)");
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isYurtaScanned, false) && !MainActivity.isYurtaScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.yurta);
+//            MainActivity.isYurtaScannedH = true;
+//            map.put("Text", "Традиционная казахская юрта");
+//            list1.add(map);
+//        }
+//        if (sPref.getBoolean(MainActivity.isArmyanScanned, false) && !MainActivity.isArmyanScannedH) {
+//            HashMap<String, Object> map = new HashMap<>();
+//            map.put("Image", R.drawable.armyan);
+//            MainActivity.isArmyanScannedH = true;
+//            map.put("Text", "Подставка для благовоний в виде граната");
+//            list1.add(map);
+//        }
+//        if (!MainActivity.isDombraScannedH && !MainActivity.isKobizScannedH && !MainActivity.isOrganScannedH && !MainActivity.isVarganScannedH && !MainActivity.isYurtaScannedH && !MainActivity.isMansiScannedH && !MainActivity.isArmyanScannedH) {
+//            txt.setVisibility(View.VISIBLE);
+//        } else {
+//            txt.setVisibility(View.INVISIBLE);
+//        }
+
+        if (sPref.getBoolean(MainActivity.isDombraScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.dombra);
             MainActivity.isDombraScannedH = true;
             map.put("Text", "Музыкальный инструмент «Домбра»");
             list1.add(map);
         }
-        if (sPref.getBoolean(MainActivity.isKobizScanned, false) && !MainActivity.isKobizScannedH) {
+        if (sPref.getBoolean(MainActivity.isKobizScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.kobiz);
             MainActivity.isKobizScannedH = true;
             map.put("Text", "Музыкальный инструмент «Кобыз»");
             list1.add(map);
         }
-        if (sPref.getBoolean(MainActivity.isOrganScanned, false) && !MainActivity.isOrganScannedH) {
+        if (sPref.getBoolean(MainActivity.isOrganScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.homeorgan);
             MainActivity.isOrganScannedH = true;
             map.put("Text", "Домашний орган");
             list1.add(map);
         }
-        if (sPref.getBoolean(MainActivity.isVarganScanned, false) && !MainActivity.isVarganScannedH) {
+        if (sPref.getBoolean(MainActivity.isVarganScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.vargan);
             MainActivity.isVarganScannedH = true;
             map.put("Text", "Музыкальный инструмент «Варган»");
             list1.add(map);
         }
-        if (sPref.getBoolean(MainActivity.isMansiScanned, false) && !MainActivity.isMansiScannedH) {
+        if (sPref.getBoolean(MainActivity.isMansiScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.mansi);
             MainActivity.isMansiScannedH = true;
             map.put("Text", "Культовое место манси (реконструкция)");
             list1.add(map);
         }
-        if (sPref.getBoolean(MainActivity.isYurtaScanned, false) && !MainActivity.isYurtaScannedH) {
+        if (sPref.getBoolean(MainActivity.isYurtaScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.yurta);
             MainActivity.isYurtaScannedH = true;
             map.put("Text", "Традиционная казахская юрта");
             list1.add(map);
         }
-        if (sPref.getBoolean(MainActivity.isArmyanScanned, false) && !MainActivity.isArmyanScannedH) {
+        if (sPref.getBoolean(MainActivity.isArmyanScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.armyan);
             MainActivity.isArmyanScannedH = true;
             map.put("Text", "Подставка для благовоний в виде граната");
             list1.add(map);
         }
-        if (!MainActivity.isDombraScannedH && !MainActivity.isKobizScannedH && !MainActivity.isOrganScannedH && !MainActivity.isVarganScannedH && !MainActivity.isYurtaScannedH && !MainActivity.isMansiScannedH && !MainActivity.isArmyanScannedH) {
-            txt.setVisibility(View.VISIBLE);
-        } else {
-            txt.setVisibility(View.INVISIBLE);
-        }
+        txt.setVisibility(View.INVISIBLE);
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, list1, R.layout.gallery_layout, new String[]{"Image", "Text"}, new int[]{R.id.icon, R.id.text1});
         list.setAdapter(simpleAdapter);
         FloatingActionButton floatingActionButton = findViewById(R.id.fabhistory);

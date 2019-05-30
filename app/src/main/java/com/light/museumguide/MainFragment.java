@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+
 
 public class MainFragment extends Fragment {
     @Override
@@ -19,33 +21,52 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
-        Button howscanbtn = fragmentView.findViewById(R.id.htsBtn);
-        howscanbtn.setOnClickListener(new View.OnClickListener() {
+        Button newsButton = fragmentView.findViewById(R.id.newsButton);
+        newsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(fragmentView.getContext(), HowScanActivity.class);
+                MainActivity.id = R.id.nav_slideshow;
+                ((MainActivity)getActivity()).replaceFragments();
+            }
+        });
+        Button contactsButton = fragmentView.findViewById(R.id.contactsButton);
+        contactsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.id = R.id.nav_contacts;
+                ((MainActivity)getActivity()).replaceFragments();
+            }
+        });
+        Button scanqrButton = fragmentView.findViewById(R.id.scanqrButton);
+        scanqrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ScanningBarcodeActivity.class);
                 startActivity(intent);
             }
         });
-        Button revBtn = fragmentView.findViewById(R.id.revBtn);
-        if(!MainActivity.isAllExpoH) {
-            revBtn.setVisibility(View.INVISIBLE);
-        }else {
-            revBtn.setVisibility(View.VISIBLE);
-        }
-        revBtn.setOnClickListener(new View.OnClickListener() {
+        Button mapButton = fragmentView.findViewById(R.id.mapButton);
+        mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(fragmentView.getContext(), ReviewActivity.class);
+                MainActivity.id = R.id.nav_manage;
+                ((MainActivity)getActivity()).replaceFragments();
+            }
+        });
+        Button expoButton = fragmentView.findViewById(R.id.expoButton);
+        expoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), HistoryActivity.class);
                 startActivity(intent);
             }
         });
-        Button sqBtn = fragmentView.findViewById(R.id.sqBtn);
-        sqBtn.setOnClickListener(new View.OnClickListener() {
+        Button aboutButton = fragmentView.findViewById(R.id.aboutButton);
+        aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(fragmentView.getContext(),ScanningBarcodeActivity.class);
-                startActivity(intent);
+                MainActivity.id = R.id.nav_about;
+                ((MainActivity)getActivity()).replaceFragments();
             }
         });
 

@@ -45,6 +45,16 @@ public class ContactsFragment extends Fragment {
             }
         });
         tv = fragmentView.findViewById(R.id.textContacts);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Uri gmmIntentUri = Uri.parse("geo:54.980051,73.378484");
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=Омский государственный историко - краеведческий музей");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
         TextView phone = fragmentView.findViewById(R.id.textContacts2);
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +67,7 @@ public class ContactsFragment extends Fragment {
         vk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri address = Uri.parse("https://vk.com/ogikmuseum/");
+                Uri address = Uri.parse("https://vk.com/ogikmuseum");
                 Intent openLinkIntent = new Intent(Intent.ACTION_VIEW, address);
                 startActivity(openLinkIntent);
 
