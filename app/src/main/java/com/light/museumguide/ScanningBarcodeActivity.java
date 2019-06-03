@@ -201,7 +201,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                     MainActivity ma = new MainActivity();
                     if(ma.isQRScanned && !rawValue.equals("EXPO={ETNOGRAPH}")) {
                         if (rawValue.equals("ELEMT={KOB}")) {
-                            if(!MainActivity.isKobizScannedH) {
+                            if(MainActivity.isKobizScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -225,7 +225,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
                             }
                         } else if (rawValue.equals("ELEMT={DOMB}")) {
-                            if(!MainActivity.isDombraScannedH) {
+                            if(MainActivity.isDombraScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -249,7 +249,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
                             }
                         } else if (rawValue.equals("ELEMT={ORGN}")) {
-                            if(!MainActivity.isOrganScannedH) {
+                            if(MainActivity.isOrganScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -273,7 +273,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
                             }
                         } else if (rawValue.equals("ELEMT={VRGN}")) {
-                            if(!MainActivity.isVarganScannedH) {
+                            if(MainActivity.isVarganScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -298,7 +298,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
                             }
                         } else if (rawValue.equals("ELEMT={YRT}")) {
-                            if(!MainActivity.isYurtaScannedH) {
+                            if(MainActivity.isYurtaScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -322,7 +322,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
                             }
                         } else if (rawValue.equals("ELEMT={MNS}")) {
-                            if (!MainActivity.isMansiScannedH) {
+                            if (MainActivity.isMansiScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -346,7 +346,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
                             }
                         } else if (rawValue.equals("ELEMT={BLGVN}")) {
-                            if(!MainActivity.isArmyanScannedH) {
+                            if(MainActivity.isArmyanScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
