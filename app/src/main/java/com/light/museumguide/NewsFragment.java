@@ -27,7 +27,8 @@ public class NewsFragment extends Fragment {
         ListView list = view.findViewById(R.id.news_list);
         SimpleAdapter simpleAdapter = new SimpleAdapter(view.getContext(), MainActivity.dataFromSite, R.layout.news_view_layout, new String[]{"Zag", "Date", "News"}, new int[]{R.id.textZagol, R.id.textDate, R.id.textNews});
         list.setAdapter(simpleAdapter);
-        TextView txt = view.findViewById(R.id.textView);
+        TextView txt = view.findViewById(R.id.allNewsText);
+        TextView txt2 = view.findViewById(R.id.textView);
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,10 +41,12 @@ public class NewsFragment extends Fragment {
         if (isNetworkError) {
             errText.setVisibility(View.VISIBLE);
             txt.setVisibility(View.INVISIBLE);
+            txt2.setVisibility(View.INVISIBLE);
             list.setVisibility(View.INVISIBLE);
         } else {
             errText.setVisibility(View.INVISIBLE);
             txt.setVisibility(View.VISIBLE);
+            txt2.setVisibility(View.VISIBLE);
             list.setVisibility(View.VISIBLE);
         }
         return view;

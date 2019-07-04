@@ -9,10 +9,13 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -26,8 +29,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
-public class ExpoInfoActivity extends AppCompatActivity {
+public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.OnInitListener  {
+    private TextToSpeech mTts;
     private float rate;
     public static CharSequence title;
     public static Drawable imageRes;
@@ -41,6 +46,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
     public static boolean isWithPlayer;
     public static int audioResource;
     private boolean isPlaying = false;
+    private String add_info;
     private MediaPlayer mediaPlayer;
     private ImageButton playBtn;
     private SharedPreferences.Editor edit;
@@ -65,15 +71,23 @@ public class ExpoInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expo_info);
         setPlaying = new PlayingProgress();
+        mTts = new TextToSpeech(this, this);
         manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         TextView titleText = findViewById(R.id.textTitle);
         isStop = false;
+        Button btn = findViewById(R.id.listenTextBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sayWords();
+            }
+        });
         sPref = getSharedPreferences("qrscan",MODE_PRIVATE);
         edit = sPref.edit();
         builder = new AlertDialog.Builder(ExpoInfoActivity.this);
         builder.setTitle("Внимание! Наушники не подключены!")
-                .setMessage("К вашему телефону не подключены наушники. Рекомендуем их подключить, для того, чтобы не мешать окружающим. Если у вас нет наушников, пожалуйста, убавьте громкость и поднесите телефон поближе к уху.")
+                .setMessage("К вашему устройству не подключены наушники. Рекомендуем их подключить, для того, чтобы не мешать окружающим. Если у вас нет наушников, пожалуйста, убавьте громкость и поднесите устройство поближе к уху.")
                 .setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -125,6 +139,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
                     isPlaying = true;
                     mediaPlayer = MediaPlayer.create(ExpoInfoActivity.this, audioResource);
                     isFirstPlaying = false;
+                    Toast.makeText(ExpoInfoActivity.this, R.string.player_toast_text, Toast.LENGTH_LONG).show();
                     mediaPlayer.start();
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
@@ -179,20 +194,20 @@ public class ExpoInfoActivity extends AppCompatActivity {
         while (dataFromDB.moveToNext()) {
             if (MainActivity.isFirstExpoScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("First Expo")) {
                 if (title.equals("First Expo")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                 }
             }
             if (MainActivity.isSecondExpoScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Second Expo")) {
                 if (title.equals("Second Expo")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                 }
 
             }
             if (MainActivity.isKobizScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Музыкальный инструмент «Кобыз»")) {
                 if (title.equals("Музыкальный инструмент «Кобыз»")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isKobizRate, false);
                 }
@@ -200,7 +215,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
             }
             if (MainActivity.isDombraScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Музыкальный инструмент «Домбра»")) {
                 if (title.equals("Музыкальный инструмент «Домбра»")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isDombraRate, false);
                 }
@@ -208,7 +223,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
             }
             if (MainActivity.isOrganScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Домашний орган")) {
                 if (title.equals("Домашний орган")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isOrganRate,false);
                 }
@@ -216,7 +231,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
             }
             if (MainActivity.isVarganScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Музыкальный инструмент «Варган»")) {
                 if (title.equals("Музыкальный инструмент «Варган»")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isVarganRate, false);
                 }
@@ -224,7 +239,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
             }
             if (MainActivity.isYurtaScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Традиционная казахская юрта")) {
                 if (title.equals("Традиционная казахская юрта")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isYurtaRate, false);
                 }
@@ -232,7 +247,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
             }
             if (MainActivity.isMansiScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Культовое место манси (реконструкция)")) {
                 if (title.equals("Культовое место манси (реконструкция)")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isMansiRate, false);
                 }
@@ -240,7 +255,7 @@ public class ExpoInfoActivity extends AppCompatActivity {
             }
             if (MainActivity.isArmyanScannedH && dataFromDB.getString(dataFromDB.getColumnIndex("name_expo")).equals("Подставка для благовоний в виде граната")) {
                 if (title.equals("Подставка для благовоний в виде граната")) {
-                    String add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
+                    add_info = dataFromDB.getString(dataFromDB.getColumnIndex("add_info"));
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isArmyanRate, false);
                 }
@@ -282,11 +297,36 @@ public class ExpoInfoActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         isStop = true;
+        mTts.stop();
         super.onPause();
         setPlaying.cancel(false);
         isRate = false;
         isFirstPlaying = true;
         releaseMP();
+    }
+
+    @Override
+    public void onInit(int status) {
+
+        if (status == TextToSpeech.SUCCESS) {
+
+            // int result = mTts.setLanguage(Locale.US);
+            // используем русский язык
+            Locale locale = new Locale("ru");
+            int result = mTts.setLanguage(locale);
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "Данный язык не поддерживается");
+            } else {
+//                sayWords();
+            }
+
+        } else {
+            Log.e("TTS", "Не удалось инициализировать движок!");
+        }
+
+
     }
 
     private class PlayingProgress extends AsyncTask {
@@ -306,9 +346,24 @@ public class ExpoInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        if (mTts != null) {
+            mTts.stop();
+            mTts.shutdown();
+        }
         releaseMP();
+        super.onDestroy();
+
     }
+
+    private void sayWords() {
+        mTts.setPitch(1f);
+        mTts.setSpeechRate(1f);
+        // Получим текст из текстового поля
+        String text = add_info;
+        // Проговариваем
+        mTts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
 
     private void releaseMP() {
         if (mediaPlayer != null) {
@@ -325,10 +380,10 @@ public class ExpoInfoActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] objects) {
             try {
                 isRate = true;
-                URL url = new URL("http://217.25.223.243/dashboard/addrate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                urlConnection.disconnect();
+//                URL url = new URL("http://217.25.223.243/dashboard/addrate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
+//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+//                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//                urlConnection.disconnect();
                 if (title.equals("Домашний орган")) {
                     edit.putBoolean(MainActivity.isOrganRate, true);
                     edit.commit();
@@ -390,10 +445,10 @@ public class ExpoInfoActivity extends AppCompatActivity {
         protected Object doInBackground(Object[] objects) {
             try {
                 isRate = true;
-                URL url = new URL("http://217.25.223.243/dashboard/replacerate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
-                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                urlConnection.disconnect();
+//                URL url = new URL("http://217.25.223.243/dashboard/replacerate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
+//                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+//                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+//                urlConnection.disconnect();
             } catch (Exception e) {
                 e.printStackTrace();
             }
