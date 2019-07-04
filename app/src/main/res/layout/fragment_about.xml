@@ -2,9 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:theme="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/AppTheme"
     tools:context=".AboutFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text='Интерактивный Гид по выставке \n"Этнографическая Панормама Сибири"\nОмского государственного \nИсторико-краеведческого музея'
+        android:text='Интерактивный Гид по выставке \n"Этнографическая Панорама Сибири"\nОмского государственного \nИсторико-краеведческого музея'
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,10 +38,24 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Благодарность сотрудникам ОГИК Музея\nОтдельная благодарность Ермоле Михаилу \nДля связи с разработчиком:\nE-Mail: alekslit84@gmail.com"
+        android:text="Благодарность сотрудникам ОГИК Музея и IT-Школы Samsung.\nОтдельная благодарность Ермоле Михаилу и Коротаеву Вадиму Геннадьевичу \nДля связи с разработчиком:\nE-Mail: alekslit84@gmail.com"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/logo"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        app:layout_constraintVertical_bias="0.131" />
 
 </android.support.constraint.ConstraintLayout>

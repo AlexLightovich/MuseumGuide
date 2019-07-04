@@ -33,18 +33,27 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 easterEggCounter++;
-                System.out.println("YOU PRESS NA EASTER:::"+easterEggCounter);
-                if(easterEggCounter>=5) {
-                    SharedPreferences preferences = ContactsFragment.this.getActivity().getSharedPreferences("qrscan", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor edit = preferences.edit();
-                    edit.putBoolean(MainActivity.isAllExpo, true);
-                    edit.commit();
-                    MainActivity.isAllExpoH = true;
+                if(easterEggCounter==3){
+                    Toast.makeText(getContext(), "Хм... Кажется тут что-то есть.", Toast.LENGTH_SHORT).show();
+                }
+                if(easterEggCounter==5) {
                     Toast.makeText(fragmentView.getContext(), "Вы нашли пасхалку. Приятного пользования by AlexLightovich :)", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), EasterActivity.class);
+                    startActivity(intent);
                 }
             }
         });
         tv = fragmentView.findViewById(R.id.textContacts);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Uri gmmIntentUri = Uri.parse("geo:54.980051,73.378484");
+                Uri gmmIntentUri = Uri.parse("geo:0,0?q=Омский государственный историко - краеведческий музей");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
         TextView phone = fragmentView.findViewById(R.id.textContacts2);
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +66,7 @@ public class ContactsFragment extends Fragment {
         vk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri address = Uri.parse("https://vk.com/ogikmuseum/");
+                Uri address = Uri.parse("https://vk.com/ogikmuseum");
                 Intent openLinkIntent = new Intent(Intent.ACTION_VIEW, address);
                 startActivity(openLinkIntent);
 
