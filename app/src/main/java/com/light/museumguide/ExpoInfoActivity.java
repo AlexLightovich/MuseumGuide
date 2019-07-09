@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
     public static CharSequence title;
     public static Drawable imageRes;
     public static boolean isOrganRate;
+    private Button btn;
     private AlertDialog warningDialog;
     private static boolean isStop;
     private AlertDialog.Builder rateDialogBuider;
@@ -76,11 +78,20 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         TextView titleText = findViewById(R.id.textTitle);
         isStop = false;
-        Button btn = findViewById(R.id.listenTextBtn);
+        btn = findViewById(R.id.listenTextBtn);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sayWords();
+                String btnTxt = btn.getText().toString();
+                System.out.println(btnTxt);
+                if(btnTxt.equals("Прослушать текст")) {
+                    btn.setText("Остановить");
+                    sayWords();
+                }
+                if(btnTxt.equals("Остановить")) {
+                    btn.setText("Прослушать текст");
+                    mTts.stop();
+                }
             }
         });
         sPref = getSharedPreferences("qrscan",MODE_PRIVATE);
@@ -137,6 +148,7 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
                 if (!isPlaying && isFirstPlaying && isDialogShowed) {
                     playBtn.setImageResource(R.drawable.ic_pause);
                     isPlaying = true;
+                    isStop = false;
                     mediaPlayer = MediaPlayer.create(ExpoInfoActivity.this, audioResource);
                     isFirstPlaying = false;
                     Toast.makeText(ExpoInfoActivity.this, R.string.player_toast_text, Toast.LENGTH_LONG).show();
@@ -156,13 +168,14 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
                 } else if (!isPlaying && !isFirstPlaying && isDialogShowed) {
                     isPlaying = true;
                     isStop = false;
-                    mediaPlayer = MediaPlayer.create(ExpoInfoActivity.this, audioResource);
+//                    mediaPlayer = MediaPlayer.create(ExpoInfoActivity.this, audioResource);
                     mediaPlayer.start();
                     setPlaying = new PlayingProgress();
                     setPlaying.execute();
                     playBtn.setImageResource(R.drawable.ic_pause);
                 } else {
                     isPlaying = false;
+                    isStop = true;
                     mediaPlayer.pause();
                     playBtn.setImageResource(R.drawable.ic_play_arrow_48px);
                 }
@@ -298,23 +311,35 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
     protected void onPause() {
         isStop = true;
         mTts.stop();
-        super.onPause();
         setPlaying.cancel(false);
         isRate = false;
         isFirstPlaying = true;
         releaseMP();
+        super.onPause();
     }
 
     @Override
     public void onInit(int status) {
 
         if (status == TextToSpeech.SUCCESS) {
-
-            // int result = mTts.setLanguage(Locale.US);
-            // используем русский язык
             Locale locale = new Locale("ru");
             int result = mTts.setLanguage(locale);
+            mTts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                @Override
+                public void onStart(String s) {
+                    Toast.makeText(ExpoInfoActivity.this, "Я ТТС Я СТАРТАНУЛСЯ ВСЕМ ПРИВЕТ", Toast.LENGTH_SHORT).show();
+                }
 
+                @Override
+                public void onDone(String s) {
+                    btn.setText(R.string.listenTxtBtn);
+                }
+
+                @Override
+                public void onError(String s) {
+
+                }
+            });
             if (result == TextToSpeech.LANG_MISSING_DATA
                     || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e("TTS", "Данный язык не поддерживается");
@@ -333,13 +358,16 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            while (mediaPlayer.getCurrentPosition() != mediaPlayer.getDuration()) {
-                if(isStop) {
-                    break;
+                if(mediaPlayer != null) {
+                    while (mediaPlayer.getCurrentPosition() != mediaPlayer.getDuration() || !isStop) {
+                        if(isStop) {
+                            break;
+                        }
+                        System.out.println(mediaPlayer.getCurrentPosition());
+                        playingBar.setProgress(mediaPlayer.getCurrentPosition());
+                    }
                 }
-                System.out.println(mediaPlayer.getCurrentPosition());
-                playingBar.setProgress(mediaPlayer.getCurrentPosition());
-            }
+
             return null;
         }
     }
@@ -359,9 +387,10 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
         mTts.setPitch(1f);
         mTts.setSpeechRate(1f);
         // Получим текст из текстового поля
-        String text = add_info;
+        String text = title+"."+add_info;
         // Проговариваем
         mTts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+
     }
 
 
