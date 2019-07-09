@@ -1,22 +1,14 @@
 package com.light.museumguide;
 
-import android.arch.persistence.room.Database;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,13 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,22 +26,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -75,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     public static boolean isFirstExpoScannedH;
     public static boolean isSecondExpoScannedH;
     public static boolean isYurtaScannedH;
+    public static boolean isFirstRun;
     public static boolean isMansiScannedH;
     public static boolean isAllExpoH;
     public static boolean isKobizScannedH;
@@ -103,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     public static final String isOrganScanned = "isOrgScan";
     public static final String isVarganScanned = "isVargScan";
     public static final String isKobizRate = "isKobRate";
+    public static final String isFirstRunSP = "isfirstrun";
     public static final String isDombraRate = "isDombraRate";
     public static final String isAllExpo = "isAllExpo";
     public static final String isOrganRate = "isOrgRate";
@@ -165,6 +138,7 @@ public class MainActivity extends AppCompatActivity
         isQRScanned = sPref.getBoolean(MainActivity.APP_PREFERENCES, false);
         isFirstEntry = sPref.getBoolean(isFirstEntrySP, true);
         isAllExpoH = sPref.getBoolean(isAllExpo, false);
+        isFirstRun = sPref.getBoolean(isFirstRunSP, true);
         MapFragment.isOrganScanned = sPref.getBoolean(isOrganScanned, false);
         MapFragment.isKobizScanned = sPref.getBoolean(isKobizScanned, false);
         MapFragment.isVarganScanned = sPref.getBoolean(isVarganScanned, false);
@@ -186,8 +160,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(id!=R.id.nav_camera){
-            id=R.id.nav_camera;
+        if (id != R.id.nav_main) {
+            id = R.id.nav_main;
             replaceFragments();
         } else {
             backPressCounter++;
@@ -195,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Нажмите кнопку Назад еще раз, чтобы выйти из приложения", Toast.LENGTH_SHORT).show();
             } else if (backPressCounter == 2) {
                 backPressCounter = 0;
-                super.onBackPressed();
+                System.exit(0);
             }
         }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -203,19 +177,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void setFirstEntryState(boolean state) {
-        isFirstEntry = state;
+    public void setSharedPreferencesState(String key,boolean state) {
         SharedPreferences sharedPreferences = sPref;
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putBoolean(isFirstEntrySP, state);
+        edit.putBoolean(key, state);
         edit.commit();
     }
 
     public void replaceFragments() {
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_main) {
             if (isMainVisible) {
 
             } else {
+                setTitle("Museum Guide | Главная");
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.include, mainFragment);
@@ -231,11 +205,12 @@ public class MainActivity extends AppCompatActivity
 
             }
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_news) {
 
             if (isNewsVisible) {
 
             } else {
+                setTitle("Новости");
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.include, newsFragment);
@@ -249,10 +224,11 @@ public class MainActivity extends AppCompatActivity
                 fab.hide();
                 fabMap.hide();
             }
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_map) {
             if (isMapVisible) {
 
             } else {
+                setTitle("Карта Экспозиции");
 //                if (isQRScanned) {
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
@@ -286,6 +262,7 @@ public class MainActivity extends AppCompatActivity
             if (isContactVisible) {
 
             } else {
+                setTitle("Контакты");
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.include, contactsFragment);
@@ -303,6 +280,7 @@ public class MainActivity extends AppCompatActivity
             if (isAboutVisible) {
 
             } else {
+                setTitle("О приложении");
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.include, aboutFragment);
@@ -368,113 +346,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            if (isMainVisible) {
-
-            } else {
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include, mainFragment);
-                fragmentTransaction.commit();
-                isMainVisible = true;
-                isMapVisible = false;
-                isContactVisible = false;
-                isGalleryVisible = false;
-                isAboutVisible = false;
-                isNewsVisible = false;
-                fab.show();
-                fabMap.hide();
-
-            }
-
-        } else if (id == R.id.nav_slideshow) {
-
-            if (isNewsVisible) {
-
-            } else {
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include, newsFragment);
-                fragmentTransaction.commit();
-                isMainVisible = false;
-                isContactVisible = false;
-                isAboutVisible = false;
-                isGalleryVisible = false;
-                isNewsVisible = true;
-                isMapVisible = false;
-                fab.hide();
-                fabMap.hide();
-            }
-        } else if (id == R.id.nav_manage) {
-            if (isMapVisible) {
-
-            } else {
-//                if (isQRScanned) {
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include, mapFragment);
-                fragmentTransaction.commit();
-                isMainVisible = false;
-                isMapVisible = true;
-                isContactVisible = false;
-                isAboutVisible = false;
-                isNewsVisible = false;
-                isGalleryVisible = false;
-                fab.show();
-                fabMap.show();
-//                } else {
-//                    FragmentManager supportFragmentManager = getSupportFragmentManager();
-//                    FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.include, lockFragment);
-//                    fragmentTransaction.commit();
-//                    isMainVisible = false;
-//                    isMapVisible = true;
-//                    isContactVisible = false;
-//                    isAboutVisible = false;
-//                    isNewsVisible = false;
-//                    isGalleryVisible = false;
-//                    fab.show();
-//                    fabMap.hide();
-//                }
-            }
-
-        } else if (id == R.id.nav_contacts) {
-            if (isContactVisible) {
-
-            } else {
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include, contactsFragment);
-                fragmentTransaction.commit();
-                isMainVisible = false;
-                isMapVisible = false;
-                isAboutVisible = false;
-                isContactVisible = true;
-                isNewsVisible = false;
-                isGalleryVisible = false;
-                fab.hide();
-                fabMap.hide();
-            }
-        } else if (id == R.id.nav_about) {
-            if (isAboutVisible) {
-
-            } else {
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.include, aboutFragment);
-                fragmentTransaction.commit();
-                isMainVisible = false;
-                isMapVisible = false;
-                isContactVisible = false;
-                isNewsVisible = false;
-                isAboutVisible = true;
-                isGalleryVisible = false;
-                fab.hide();
-                fabMap.hide();
-            }
-        }
-
+        replaceFragments();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

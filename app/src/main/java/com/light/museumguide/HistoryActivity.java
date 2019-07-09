@@ -38,7 +38,6 @@ public class HistoryActivity extends AppCompatActivity {
         System.out.println("THIS IS ONCREATE LIST!!!!::: " + list1);
         list = findViewById(R.id.historylist_view);
         txt = findViewById(R.id.textIfEmpty);
-        SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
 //        if (sPref.getBoolean(MainActivity.isFirstExpoScanned, false) && !MainActivity.isFirstExpoScannedH) {
 //            HashMap<String, Object> map = new HashMap<>();
 //            map.put("Image", R.drawable.expoimage1);
@@ -107,7 +106,22 @@ public class HistoryActivity extends AppCompatActivity {
 //        } else {
 //            txt.setVisibility(View.INVISIBLE);
 //        }
+        txt.setVisibility(View.INVISIBLE);
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, list1, R.layout.gallery_layout, new String[]{"Image", "Text"}, new int[]{R.id.icon, R.id.text1});
+        list.setAdapter(simpleAdapter);
+        FloatingActionButton floatingActionButton = findViewById(R.id.fabhistory);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HistoryActivity.this, ScanningBarcodeActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
+    @Override
+    protected void onResume() {
+        SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
         if (sPref.getBoolean(MainActivity.isDombraScanned, true)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("Image", R.drawable.dombra);
@@ -157,17 +171,7 @@ public class HistoryActivity extends AppCompatActivity {
             map.put("Text", "Подставка для благовоний в виде граната");
             list1.add(map);
         }
-        txt.setVisibility(View.INVISIBLE);
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, list1, R.layout.gallery_layout, new String[]{"Image", "Text"}, new int[]{R.id.icon, R.id.text1});
-        list.setAdapter(simpleAdapter);
-        FloatingActionButton floatingActionButton = findViewById(R.id.fabhistory);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HistoryActivity.this, ScanningBarcodeActivity.class);
-                startActivity(intent);
-            }
-        });
+        super.onResume();
     }
 
     public void expoClick(View view) {
@@ -249,5 +253,11 @@ public class HistoryActivity extends AppCompatActivity {
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        list1.clear();
     }
 }

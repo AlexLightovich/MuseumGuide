@@ -33,14 +33,13 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 easterEggCounter++;
-                System.out.println("YOU PRESS NA EASTER:::"+easterEggCounter);
-                if(easterEggCounter>=5) {
-                    SharedPreferences preferences = ContactsFragment.this.getActivity().getSharedPreferences("qrscan", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor edit = preferences.edit();
-                    edit.putBoolean(MainActivity.isAllExpo, true);
-                    edit.commit();
-                    MainActivity.isAllExpoH = true;
+                if(easterEggCounter==3){
+                    Toast.makeText(getContext(), "Хм... Кажется тут что-то есть.", Toast.LENGTH_SHORT).show();
+                }
+                if(easterEggCounter==5) {
                     Toast.makeText(fragmentView.getContext(), "Вы нашли пасхалку. Приятного пользования by AlexLightovich :)", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), EasterActivity.class);
+                    startActivity(intent);
                 }
             }
         });

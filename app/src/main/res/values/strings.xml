@@ -10,6 +10,8 @@
     <string name="second_expo">Вторая экспозиция "Ещё один какой-то домик".</string>
     <string name="firstexpo">First Expo</string>
     <string name="welcome_dialog">Добро пожаловать на экпозицию "Этнографическая панорама Сибири"!\nПунктирная линия - путь, по которому Вам необходимо пройти.\nЧтобы отсканировать QR-Код, нажмите на кнопку с иконкой камеры.\nЧтобы открыть список отсканированных экспонатов нажмите на кнопку с иконкой карты.</string>
+    <string name="player_toast_text">Для приостановки проигрывания, нажмите кнопку со значком "Пауза". Для перемотки, воспользуйтесь бегунком рядом с кнопкой воспроизведения.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="listenTxtBtn">Прослушать текст</string>
 </resources>
