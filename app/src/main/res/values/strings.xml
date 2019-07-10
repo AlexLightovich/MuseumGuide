@@ -14,5 +14,6 @@
     <string name="listenTxtBtn">Прослушать текст</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="networkErrorText">Раздел новостей недоступен.   Попробуйте перезапустить приложение, проверьте интернет-соеденение и повторите попытку позже.</string>
 
 </resources>

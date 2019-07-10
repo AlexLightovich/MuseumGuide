@@ -88,6 +88,7 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), HistoryActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         Button aboutButton = fragmentView.findViewById(R.id.aboutButton);

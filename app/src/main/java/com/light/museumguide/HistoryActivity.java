@@ -26,6 +26,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        finish();
         Intent intent = new Intent(HistoryActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -253,6 +254,7 @@ public class HistoryActivity extends AppCompatActivity {
             Intent intent = new Intent(HistoryActivity.this, ExpoInfoActivity.class);
             startActivity(intent);
         }
+        finish();
     }
 
     @Override

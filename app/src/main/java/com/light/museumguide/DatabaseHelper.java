@@ -23,7 +23,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE user(_id INTEGER PRIMARY KEY AUTOINCREMENT,"+
                 "   name_expo TEXT," +
-                "   add_info TEXT" +
+                "   add_info TEXT," +
+                "   rate FLOAT"+
                 ")";
         db.execSQL(query);
         db.execSQL("INSERT INTO user (name_expo, add_info) VALUES('First Expo','this is add info for first expo')");

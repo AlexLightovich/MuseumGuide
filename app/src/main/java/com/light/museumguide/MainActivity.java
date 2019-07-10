@@ -28,6 +28,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(this, "Нажмите кнопку Назад еще раз, чтобы выйти из приложения", Toast.LENGTH_SHORT).show();
             } else if (backPressCounter == 2) {
                 backPressCounter = 0;
+                finish();
                 System.exit(0);
             }
         }
@@ -355,8 +357,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    private class MyConnection extends AsyncTask {
+    public class MyConnection extends AsyncTask {
 
         @Override
         protected Object doInBackground(Object[] objects) {

@@ -51,6 +51,8 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
     private String add_info;
     private MediaPlayer mediaPlayer;
     private ImageButton playBtn;
+    private SharedPreferences sPrefRate;
+    private SharedPreferences.Editor editRate;
     private SharedPreferences.Editor edit;
     private SharedPreferences sPref;
     private boolean isRate = false;
@@ -64,15 +66,18 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
     public void onBackPressed() {
         isStop = true;
         releaseMP();
+       finish();
         Intent intent = new Intent(ExpoInfoActivity.this, HistoryActivity.class);
         startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expo_info);
+        super.onCreate(savedInstanceState);
         setPlaying = new PlayingProgress();
+        sPrefRate = getSharedPreferences("expoRating",MODE_PRIVATE);
+        editRate = sPrefRate.edit();
         mTts = new TextToSpeech(this, this);
         manager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
@@ -96,6 +101,7 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
         });
         sPref = getSharedPreferences("qrscan",MODE_PRIVATE);
         edit = sPref.edit();
+        ratingBar.setRating(sPrefRate.getFloat(title.toString(), 0f));
         builder = new AlertDialog.Builder(ExpoInfoActivity.this);
         builder.setTitle("Внимание! Наушники не подключены!")
                 .setMessage("К вашему устройству не подключены наушники. Рекомендуем их подключить, для того, чтобы не мешать окружающим. Если у вас нет наушников, пожалуйста, убавьте громкость и поднесите устройство поближе к уху.")
@@ -273,7 +279,6 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
                     addInfoText.setText(add_info);
                     isRate = sPref.getBoolean(MainActivity.isArmyanRate, false);
                 }
-
             }
         }
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -312,6 +317,8 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
     protected void onPause() {
         isStop = true;
         mTts.stop();
+        playBtn.setImageResource(R.drawable.ic_play_arrow_48px);
+        btn.setText("Прослушать текст");
         setPlaying.cancel(false);
         isRate = false;
         isFirstPlaying = true;
@@ -359,17 +366,22 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
 
         @Override
         protected Object doInBackground(Object[] objects) {
-                if(mediaPlayer != null) {
-                    while (mediaPlayer.getCurrentPosition() != mediaPlayer.getDuration() || !isStop) {
-                        if(isStop) {
-                            break;
-                        }
-                        System.out.println(mediaPlayer.getCurrentPosition());
-                        playingBar.setProgress(mediaPlayer.getCurrentPosition());
+            if(mediaPlayer != null) {
+                while (mediaPlayer.getCurrentPosition() != mediaPlayer.getDuration() || !isStop) {
+                    if(isStop) {
+                        break;
                     }
+                    System.out.println(mediaPlayer.getCurrentPosition());
+                    int currentPosition = mediaPlayer.getCurrentPosition();
+                    playingBar.setProgress(currentPosition);
                 }
-
+            }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
         }
     }
 
@@ -414,6 +426,8 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
 //                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 //                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 //                urlConnection.disconnect();
+                editRate.putFloat(title.toString(),rate);
+                editRate.apply();
                 if (title.equals("Домашний орган")) {
                     edit.putBoolean(MainActivity.isOrganRate, true);
                     edit.commit();
@@ -475,6 +489,8 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
         protected Object doInBackground(Object[] objects) {
             try {
                 isRate = true;
+                editRate.putFloat(title.toString(),rate);
+                editRate.apply();
 //                URL url = new URL("http://217.25.223.243/dashboard/replacerate.php?device_id="+MainActivity.ANDROID_ID+"&expo="+title+"&rate="+rate);
 //                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 //                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
