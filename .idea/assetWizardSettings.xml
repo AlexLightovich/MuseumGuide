@@ -14,11 +14,19 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
+<<<<<<< HEAD
                             <entry key="height" value="512" />
                             <entry key="outputName" value="ic_chubby" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="D:\downloads\chubby.svg" />
                             <entry key="width" value="512" />
+=======
+                            <entry key="height" value="96" />
+                            <entry key="outputName" value="ic_expo" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\Cerats\Downloads\ic_account_balance_48px.svg" />
+                            <entry key="width" value="96" />
+>>>>>>> 8f6f434228434297791dcce0aed343e987ec7b88
                           </map>
                         </option>
                       </PersistentState>

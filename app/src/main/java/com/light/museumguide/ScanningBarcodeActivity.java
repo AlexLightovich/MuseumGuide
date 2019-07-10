@@ -195,11 +195,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                         MainActivity.isQRScanned = true;
                         withWay.show();
 
-                    }
-                    MainActivity ma = new MainActivity();
-                    if(ma.isQRScanned && !rawValue.equals("EXPO={ETNOGRAPH}")) {
-                        if (rawValue.equals("ELEMT={KOB}")) {
-                            if(!MainActivity.isKobizScannedH) {
+                    }if (rawValue.equals("ELEMT={KOB}")) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -210,7 +206,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 map.put("Image", R.drawable.kobiz);
                                 map.put("Text", "Музыкальный инструмент «Кобыз»");
                                 ExpoInfoActivity.audioResource = R.raw.kobiz;
-                                ha.list1.add(map);
+//                                ha.list1.add(map);
                                 MainActivity mainActivity = new MainActivity();
                                 mainActivity.id = R.id.nav_map;
                                 ExpoInfoActivity.isWithPlayer = true;
@@ -219,11 +215,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 MainActivity.isKobizScannedH = true;
                                 Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                                 startActivity(intent);
-                            }else {
-                                Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
-                            }
                         } else if (rawValue.equals("ELEMT={DOMB}")) {
-                            if(!MainActivity.isDombraScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -234,7 +226,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 map.put("Image", R.drawable.dombra);
                                 map.put("Text", "Музыкальный инструмент «Домбра»");
                                 ExpoInfoActivity.audioResource = R.raw.dombra;
-                                ha.list1.add(map);
+//                                ha.list1.add(map);
                                 MainActivity mainActivity = new MainActivity();
                                 mainActivity.id = R.id.nav_map;
                                 ExpoInfoActivity.isWithPlayer = true;
@@ -243,11 +235,8 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 MainActivity.isDombraScannedH = true;
                                 Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                                 startActivity(intent);
-                            }else {
-                                Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
-                            }
+
                         } else if (rawValue.equals("ELEMT={ORGN}")) {
-                            if(!MainActivity.isOrganScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -258,7 +247,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 map.put("Image", R.drawable.homeorgan);
                                 map.put("Text", "Домашний орган");
                                 ExpoInfoActivity.audioResource = R.raw.orghan;
-                                ha.list1.add(map);
+//                                ha.list1.add(map);
                                 MainActivity mainActivity = new MainActivity();
                                 mainActivity.id = R.id.nav_map;
                                 ExpoInfoActivity.isWithPlayer = true;
@@ -267,11 +256,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 MainActivity.isOrganScannedH = true;
                                 Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                                 startActivity(intent);
-                            }else {
-                                Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
-                            }
                         } else if (rawValue.equals("ELEMT={VRGN}")) {
-                            if(!MainActivity.isVarganScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -282,7 +267,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 map.put("Image", R.drawable.vargan);
                                 map.put("Text", "Музыкальный инструмент «Варган»");
 //                        ExpoInfoActivity.audioResource = R.raw.catmeow;
-                                ha.list1.add(map);
+//                                ha.list1.add(map);
                                 MainActivity mainActivity = new MainActivity();
                                 mainActivity.id = R.id.nav_map;
                                 ExpoInfoActivity.isWithPlayer = true;
@@ -292,11 +277,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 MainActivity.isVarganScannedH = true;
                                 Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                                 startActivity(intent);
-                            }else {
-                                Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
-                            }
                         } else if (rawValue.equals("ELEMT={YRT}")) {
-                            if(!MainActivity.isYurtaScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -307,7 +288,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 map.put("Image", R.drawable.yurta);
                                 map.put("Text", "Традиционная казахская юрта");
                                 ExpoInfoActivity.audioResource = R.raw.orghan;
-                                ha.list1.add(map);
+//                                ha.list1.add(map);
                                 MainActivity mainActivity = new MainActivity();
                                 mainActivity.id = R.id.nav_map;
                                 ExpoInfoActivity.isWithPlayer = false;
@@ -316,11 +297,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 MainActivity.isYurtaScannedH = true;
                                 Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                                 startActivity(intent);
-                            }else {
-                                Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
-                            }
                         } else if (rawValue.equals("ELEMT={MNS}")) {
-                            if (!MainActivity.isMansiScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -331,7 +308,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 map.put("Image", R.drawable.mansi);
                                 map.put("Text", "Культовое место манси (реконструкция)");
                                 ExpoInfoActivity.audioResource = R.raw.orghan;
-                                ha.list1.add(map);
+//                                ha.list1.add(map);
                                 MainActivity mainActivity = new MainActivity();
                                 mainActivity.id = R.id.nav_map;
                                 ExpoInfoActivity.isWithPlayer = false;
@@ -340,11 +317,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 MainActivity.isMansiScannedH = true;
                                 Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                                 startActivity(intent);
-                            }else {
-                                Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
-                            }
                         } else if (rawValue.equals("ELEMT={BLGVN}")) {
-                            if(!MainActivity.isArmyanScannedH) {
                                 cameraView.stop();
                                 HistoryActivity ha = new HistoryActivity();
                                 SharedPreferences sPref = getSharedPreferences("qrscan", MODE_PRIVATE);
@@ -355,7 +328,7 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 map.put("Image", R.drawable.armyan);
                                 map.put("Text", "Подставка для благовоний в виде граната");
                                 ExpoInfoActivity.audioResource = R.raw.orghan;
-                                ha.list1.add(map);
+//                                ha.list1.add(map);
                                 MainActivity mainActivity = new MainActivity();
                                 mainActivity.id = R.id.nav_map;
                                 ExpoInfoActivity.isWithPlayer = false;
@@ -364,19 +337,15 @@ public class ScanningBarcodeActivity extends AppCompatActivity {
                                 MainActivity.isArmyanScannedH = true;
                                 Intent intent = new Intent(ScanningBarcodeActivity.this, ExpoInfoActivity.class);
                                 startActivity(intent);
-                            }else {
-                                Toast.makeText(this, "Вы уже отсканировали этот экспонат", Toast.LENGTH_SHORT).show();
-                                cameraView.start();
-                            }
                         }else {
                             Toast.makeText(ScanningBarcodeActivity.this, "Вы отсканировали QR код не находящийся в музее.", Toast.LENGTH_SHORT).show();
                             cameraView.start();
                         }
-                    }else {
-                        Toast.makeText(ScanningBarcodeActivity.this, "Для начала, необходимо отсканировать QR-Код у входа выставки", Toast.LENGTH_SHORT).show();
-                        cameraView.start();
-
-                    }
+//                    }else {
+//                        Toast.makeText(ScanningBarcodeActivity.this, "Для начала, необходимо отсканировать QR-Код у входа выставки", Toast.LENGTH_SHORT).show();
+//                        cameraView.start();
+//
+//                    }
                     break;
                 }
 

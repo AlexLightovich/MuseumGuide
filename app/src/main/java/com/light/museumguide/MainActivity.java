@@ -25,6 +25,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,7 +46,9 @@ public class MainActivity extends AppCompatActivity
     public static boolean isFirstExpoScannedH;
     public static boolean isSecondExpoScannedH;
     public static boolean isYurtaScannedH;
+    public static boolean isFirstRun;
     public static boolean isMansiScannedH;
+    public static float textAddInfoSize;
     public static boolean isAllExpoH;
     public static boolean isKobizScannedH;
     public static boolean isDombraScannedH;
@@ -68,11 +71,13 @@ public class MainActivity extends AppCompatActivity
     public static final String isKobizScanned = "isKobScan";
     public static final String isDombraScanned = "isDombraScan";
     public static final String isYurtaScanned = "isYurtScan";
+    public static final String textSizeSP = "textSizeSP";
     public static final String isArmyanScanned = "isBlgvnScan";
     public static final String isMansiScanned = "isMansiScan";
     public static final String isOrganScanned = "isOrgScan";
     public static final String isVarganScanned = "isVargScan";
     public static final String isKobizRate = "isKobRate";
+    public static final String isFirstRunSP = "isfirstrun";
     public static final String isDombraRate = "isDombraRate";
     public static final String isAllExpo = "isAllExpo";
     public static final String isOrganRate = "isOrgRate";
@@ -135,6 +140,8 @@ public class MainActivity extends AppCompatActivity
         isQRScanned = sPref.getBoolean(MainActivity.APP_PREFERENCES, false);
         isFirstEntry = sPref.getBoolean(isFirstEntrySP, true);
         isAllExpoH = sPref.getBoolean(isAllExpo, false);
+        textAddInfoSize = sPref.getFloat(textSizeSP, 12f);
+        isFirstRun = sPref.getBoolean(isFirstRunSP, true);
         MapFragment.isOrganScanned = sPref.getBoolean(isOrganScanned, false);
         MapFragment.isKobizScanned = sPref.getBoolean(isKobizScanned, false);
         MapFragment.isVarganScanned = sPref.getBoolean(isVarganScanned, false);
@@ -156,8 +163,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(id!=R.id.nav_main){
-            id=R.id.nav_main;
+        if (id != R.id.nav_main) {
+            id = R.id.nav_main;
             replaceFragments();
         } else {
             backPressCounter++;
@@ -173,11 +180,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void setFirstEntryState(boolean state) {
-        isFirstEntry = state;
+    public void setSharedPreferencesState(String key,boolean state) {
         SharedPreferences sharedPreferences = sPref;
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putBoolean(isFirstEntrySP, state);
+        edit.putBoolean(key, state);
         edit.commit();
     }
 
@@ -302,21 +308,22 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.textSizeItem) {
+            Intent intent = new Intent(MainActivity.this, SetTextSizeActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onResume() {

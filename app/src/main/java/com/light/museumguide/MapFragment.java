@@ -40,7 +40,8 @@ public class MapFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         welcomeDialog.cancel();
                         MainActivity mainActivity = new MainActivity();
-                        mainActivity.setFirstEntryState(false);
+                        MainActivity.isFirstEntry = false;
+                        mainActivity.setSharedPreferencesState(MainActivity.isFirstEntrySP,false);
                     }
                 })
                 .setMessage(R.string.welcome_dialog);
