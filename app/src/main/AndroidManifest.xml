@@ -12,9 +12,11 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".EasterActivity"
+        <activity android:name=".SetTextSizeActivity"></activity>
+        <activity
+            android:name=".EasterActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity android:name=".ReviewActivity" />
         <activity
             android:name=".ExpoInfoActivity"

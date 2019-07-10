@@ -202,6 +202,7 @@ public class ExpoInfoActivity extends AppCompatActivity implements TextToSpeech.
         titleText.setText(title);
         addInfoText.setText(addInfo);
         image.setImageDrawable(imageRes);
+        addInfoText.setTextSize(MainActivity.textAddInfoSize);
         DatabaseHelper databaseHelper = new DatabaseHelper(ExpoInfoActivity.this);
         Cursor dataFromDB = databaseHelper.getDataFromDB();
         while (dataFromDB.moveToNext()) {

@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     public static boolean isYurtaScannedH;
     public static boolean isFirstRun;
     public static boolean isMansiScannedH;
+    public static float textAddInfoSize;
     public static boolean isAllExpoH;
     public static boolean isKobizScannedH;
     public static boolean isDombraScannedH;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity
     public static final String isKobizScanned = "isKobScan";
     public static final String isDombraScanned = "isDombraScan";
     public static final String isYurtaScanned = "isYurtScan";
+    public static final String textSizeSP = "textSizeSP";
     public static final String isArmyanScanned = "isBlgvnScan";
     public static final String isMansiScanned = "isMansiScan";
     public static final String isOrganScanned = "isOrgScan";
@@ -138,6 +140,7 @@ public class MainActivity extends AppCompatActivity
         isQRScanned = sPref.getBoolean(MainActivity.APP_PREFERENCES, false);
         isFirstEntry = sPref.getBoolean(isFirstEntrySP, true);
         isAllExpoH = sPref.getBoolean(isAllExpo, false);
+        textAddInfoSize = sPref.getFloat(textSizeSP, 12f);
         isFirstRun = sPref.getBoolean(isFirstRunSP, true);
         MapFragment.isOrganScanned = sPref.getBoolean(isOrganScanned, false);
         MapFragment.isKobizScanned = sPref.getBoolean(isKobizScanned, false);
@@ -305,21 +308,22 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.textSizeItem) {
+            Intent intent = new Intent(MainActivity.this, SetTextSizeActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onResume() {

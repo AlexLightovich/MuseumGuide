@@ -9,39 +9,46 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainFragment extends Fragment {
-    AlertDialog.Builder isBlindBuilder;
-    AlertDialog isBlindDialog;
+    AlertDialog.Builder setTextBuilder;
+    AlertDialog setTextDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View fragmentView = inflater.inflate(R.layout.fragment_main, container, false);
-//        isBlindBuilder = new AlertDialog.Builder(fragmentView.getContext())
-//                .setTitle("Режим для слабовидящих")
-//                .setCancelable(false)
-//                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        isBlindDialog.cancel();
-//                        MainActivity mainActivity = new MainActivity();
-//                        MainActivity.isFirstEntry = false;
-//                        mainActivity.setSharedPreferencesState(MainActivity.isFirstEntrySP,false);
-//                    }
-//                })
-//                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        isBlindDialog.cancel();
-//                    }
-//                })
-//                .setMessage("Хотите включить режим для слабовидящих?");
-//        isBlindDialog = isBlindBuilder.create();
-//        if(MainActivity.isFirstRun) {
-//            isBlindDialog.show();
-//        }
+        setTextBuilder = new AlertDialog.Builder(fragmentView.getContext())
+                .setTitle("Изменение размера текста")
+                .setCancelable(false)
+                .setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setTextDialog.cancel();
+                        MainActivity mainActivity = new MainActivity();
+                        MainActivity.isFirstRun = false;
+                        mainActivity.setSharedPreferencesState(MainActivity.isFirstRunSP,false);
+                        Intent intent = new Intent(fragmentView.getContext(), SetTextSizeActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setTextDialog.cancel();
+                        MainActivity mainActivity = new MainActivity();
+                        MainActivity.isFirstRun = false;
+                        mainActivity.setSharedPreferencesState(MainActivity.isFirstRunSP,false);
+                        Toast.makeText(fragmentView.getContext(), "В любой момент вы сможете изменить размер текста, нажав на три точки в правом верхнем углу.", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setMessage("Добро пожаловать в Museum Guide!\n Хотите ли вы изменить размер текста под Ваше устройство?");
+        setTextDialog = setTextBuilder.create();
+        if(MainActivity.isFirstRun) {
+            setTextDialog.show();
+        }
         Button newsButton = fragmentView.findViewById(R.id.newsButton);
         newsButton.setOnClickListener(new View.OnClickListener() {
             @Override
